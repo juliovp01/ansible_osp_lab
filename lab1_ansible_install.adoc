@@ -120,6 +120,46 @@ pip install ansible
 In this lab we will use a Sublime Text to write the ansible playbooks. To install Sublime Text download the latest version for Microsoft Windows at: https://www.sublimetext.com/3 .
 
 
+== Linux Install Instructions
+
+=== Installing Ansible and Git in Fedora
+
+To install Ansible and Git in Fedora execute: 
+
+[source,]
+----
+sudo dnf -y install ansible git
+----
+
+=== Installing Ansible and Git in CentOS
+
+To install Ansible and Git in CentOS execute:
+
+[source,]
+----
+sudo yum -y  install ansible git
+----
+
+=== Install Ansible and Git in Ubuntu
+
+To install Ansible and Git in Ubuntu: 
+
+[source,]
+----
+sudo apt-get update 
+sudo apt-get install software-properties-common
+sudo apt-add-repository ppa:ansible/ansible
+sudo apt-get update
+sudo apt-get install ansible git
+----
+
+==== Installing a Text editor
+
+In Linux we will use vi/vim/nano to edit and manipulate files. 
+
+
+
+
 
 
 
