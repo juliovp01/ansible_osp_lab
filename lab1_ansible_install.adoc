@@ -157,6 +157,20 @@ sudo apt-get install ansible git
 
 In Linux we will use vi/vim/nano to edit and manipulate files. 
 
+== Pre-installed VirtualBox Image
+
+Another way to get all the tooling needed for the labs in scope today is to download the following Virtual Machine Appliance (running Fedora) http://people.redhat.com/juvillar/ova/ansible-mgmt.ova[HERE]. 
+
+In order to use this image you will need to run VirtualBox in your workstation. To download and install VirtualBox for your Operating System please visit: https://www.virtualbox.org/wiki/Downloads 
+
+Virtual Machine credentials for the appliance are: ansible / ansible
+
+
+
+
+
+
+
 
 
 
