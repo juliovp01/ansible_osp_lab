@@ -1,0 +1,67 @@
+= Lab 1: Installing prerequisites tools
+
+=== Objective: 
+
+The objective of this lab is to install the prerequisites needed for this session in your workstation including: 
+
+* https://www.ansible.com/[Ansible]
+* https://git-scm.com/[Git]
+* Text editor
+
+== macOS Install Intructions
+
+=== Installing Ansible in macOS
+
+The preferred way to install ansible on a Mac is via "pip", the Python package manager. In order to do that, launch your Terminal.
+
+Install Pip
+
+[source,]
+----
+sudo easy_install pip
+----
+
+Install Ansible with Pip
+
+[source,]
+----
+sudo pip install ansible 
+----
+
+There is a second way to get Ansible installed in macOS, using https://brew.sh[Homebrew]. To do so, execute the following command: 
+
+[source,]
+----
+brew install ansible
+----
+
+After this let's verify that Ansible is installed from your Terminal by executing: 
+
+[source,]
+----
+ansible --version 
+----
+
+You could get an output similar to: 
+
+----
+$ ansible --version
+ansible 2.0.0.2
+  config file =
+  configured module search path = Default w/o overridesansible --version
+----
+
+
+
+=== Installing Git in macOS
+
+Here are the instructions to install Git in macOS:
+
+
+
+
+
+
+
+
+
