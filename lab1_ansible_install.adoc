@@ -51,11 +51,24 @@ ansible 2.0.0.2
   configured module search path = Default w/o overridesansible --version
 ----
 
-
-
 === Installing Git in macOS
 
-Here are the instructions to install Git in macOS:
+In macOS git is installed with the  Xcode Command Line Tools. First verify if git is already installed in the Operating System by launching a Terminal and typing: 
+
+[source,]
+----
+git --version
+----
+
+If git is not installed a version of Git could be downloaded and installed https://git-scm.com/download/mac[Here].
+
+=== Installing a Text editor on macOS
+
+In this lab we will use a Sublime Text to write the ansible playbooks. To install Sublime Text download the latest version at: https://www.sublimetext.com/3 . 
+
+
+
+
 
 
 
