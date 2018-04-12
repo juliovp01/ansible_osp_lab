@@ -66,6 +66,70 @@ If git is not installed a version of Git could be downloaded and installed https
 
 In this lab we will use a Sublime Text to write the ansible playbooks. To install Sublime Text download the latest version at: https://www.sublimetext.com/3 . 
 
+== Microsoft Windows Install Instructions 
+
+=== Installing Ansible and Git in Windows 
+
+Ansible in Microsoft Windows could be installed using http://cygwin.com[Cygwin]. For instructions in how to install Cygwin visit the instructions in the following link: http://cygwin.com/install.html.
+
+Here is the list of packages that need to be selected in the Cygwin installation process as dependencies: 
+
+* curl
+* python (2.7.x)
+* python-jinja
+* python-crypto
+* python-openssl
+* python-setuptools
+* git (1.7.x)
+* vim
+* openssh
+* openssl
+* openssl-devel
+* gcc-g++
+* libffi-devel
+* libmysqlclient-devel
+
+After this install PyYAML and Jinja2 separately, as they are not available in Cygwin.
+
+Open Cygwin and execute all the following actions:
+
+
+Generate an SSH keys:
+
+[source,]
+----
+ssh-keygen
+----
+
+Install pip:
+
+[source,]
+----
+easy_install-2.7 pip
+----
+
+Install Ansible:
+
+[source,]
+----
+pip install ansible
+----
+
+==== Installing a Text editor on macOS
+
+In this lab we will use a Sublime Text to write the ansible playbooks. To install Sublime Text download the latest version for Microsoft Windows at: https://www.sublimetext.com/3 .
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
