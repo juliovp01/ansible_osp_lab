@@ -1,0 +1,86 @@
+= Overview of the Lab
+
+== Abstract
+
+_As OpenStack popularity and complexity continue to rise and new feature sets 
+are introduced regularly, findings ways to simplify and produce consistent 
+results is always at the forefront of any system administrator’s mind. With the 
+use of Ansible, an agentless IT automation technology, a system administrator 
+can do just that.
+
+The goal of this lab is to provide a brief introduction to Ansible, the 
+usability of Ansible playbooks, and then show how to leverage key Ansible 
+modules to better manage and simplify OpenStack environments. These management 
+playbooks will consist of typical administrative tasks such as:
+
+* Managing Networks
+* Managing Instances
+* Managing Resources
+
+This lab is best suited for system and OpenStack administrators looking for 
+ways to automate their day-to-day OpenStack administrative tasks._
+
+
+== Environment Overview
+
+This lab will provide a step-by-step on using several http://docs.ansible.com/ansible/latest/modules/list_of_cloud_modules.html#openstack[Ansible OpenStack modules] 
+to manage everyday tasks. 
+The lab environment consists of a virtual machine running on 
+https://www.ovh.com/world/public-cloud/instances/[OVH public cloud
+instances] and the use of either the student's laptop as a workstation with
+https://ansible.com[Ansible] installed or running a Fedora https://www.virtualbox.org/[VirtualBox] 
+image provided by the instructors. 
+
+Each student's OVH public cloud instance consists of an 
+https://www.rdoproject.org/[RDO Project] OpenStack `packstack` installation 
+using https://www.centos.org/[CentOS] as the Linux distribution. Each instance
+ will contain a file labeled  `keystonerc_demo` with all the credential 
+information to use an Openstack user labeled `demo` within the project 
+labeled `demo`. 
+
+== Lab Scope
+
+The lab exercises are intended to be small simple playbooks that effect different
+areas of day-to-day OpenStack administration. Each exercise will focus on a key
+element of OpenStack, i.e. network creation. Each lab
+builds upon the previous lab exercise and the lab will focus on 
+using as many Ansible OpenStack modules whenever possible. The final lab exercise
+will encapsulate all the information you have learned from the previous labs and
+provide an opportunity to test your knowledge of managing OpenStack networks, 
+instances and their resources. 
+
+== Connectivity Details
+
+The labs require students to be able to access the OVH instance via an `ssh` 
+session, via their workstation or a VirtualBox VM running Fedora. Each student
+will have a specific `student_id` that is assigned by the instructor. This 
+`student_id` is important as it is the name of your instance. 
+
+*IMPORTANT: If you have not been assigned a `student_id` and
+associated IP address of the instance, please get a hold
+of an instructor.*
+
+The folowing tables provide specific details about the environment that is to
+be used.
+
+|====
+| *OpenStack Dashboard | *OpenStack RC File Location* | *OpenStack User* | *Openstack Project* 
+| https://<ip_of_instance>/dashboard | /root/keystonerc_demo | demo | demo
+|====
+
+The details of the instance including the name and IP address will be 
+provided by the instructor during the lab.
+
+|====
+| *Name of Instance* | *IP Address* | *username* 
+| <student_id> | <instructor_provided> | centos
+|====
+
+The student's public SSH key i.e. `id_rsa.pub` on their workstation will be 
+required in order to SSH into the instance. 
+
+//TODO: Julio, how can we better manage this portion? Provide a private key 
+//instead? Not sure of the options in OVH.
+
+
+
