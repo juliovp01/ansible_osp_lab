@@ -37,7 +37,9 @@ to manage our OpenStack node.
 A pictorial representation of Ansible's architecture from the Ansible site can
 be seen below:
 
-image::images/ansible_architecture.png[float="center"]
+[.text-center]
+.Ansible Architecture
+image::images/ansible_architecture.png[align="center"]
 
 == Installation of Prerequisite Tools
 
