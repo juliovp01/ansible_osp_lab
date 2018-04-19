@@ -21,7 +21,7 @@ nodes. The managed nodes are listed in an _inventory_ file. The inventory
 of the managed hosts is either a simple static text file or a dynamic inventory
 file created by a set of scripts written by the end user to determine the IPs or the
 hostname of the hosts that are to be managed. For the purposes of this lab, the
-inventory files will be static text file. Inventory files include the ability
+inventory files will be a static text file. Inventory files include the ability
 to group nodes together for easier manageability. For example grouping all 
 the database nodes in a group labeled database.
 
@@ -40,6 +40,9 @@ be seen below:
 [.text-center]
 .Ansible Architecture
 image::images/ansible_architecture.png[float="center",align="center"]
+
+The subsequent sections go into the installation of Ansible and their 
+prerequisites.
 
 == Installation of Prerequisite Tools
 
