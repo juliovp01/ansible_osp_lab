@@ -8,7 +8,7 @@ to be installed (if not already):
 
 * https://www.ansible.com/[Ansible]
 * https://git-scm.com/[Git]
-* Text editor such as https://www.sublimetext.com/3[Sublime Text]
+* Text editor (such as https://www.sublimetext.com/3[Sublime Text])
 
 NOTE: The Fedora VirtualBox image pre-installs all the required prerequisites.
 Please reference the section <<vbsetup, VirtualBox Setup>> if not planning on
@@ -32,7 +32,7 @@ sudo easy_install pip
 sudo pip install ansible 
 ----
 
-Verify that Ansible successfully installed by running: 
+Verify that Ansible is successfully installed by running: 
 
 ----
 ansible --version 
@@ -52,7 +52,7 @@ $ ansible 2.5.0
 
 === Installing Ansible (Method #2)
 
-A second method of deploying Ansible for the macOS, is using using https://brew.sh[Homebrew]. 
+A second method of deploying Ansible for the macOS, is using https://brew.sh[Homebrew]. 
 Launch a terminal and execute the following commands:
 
 .Installation of `brew`
@@ -60,7 +60,7 @@ Launch a terminal and execute the following commands:
 brew install ansible
 ----
 
-Verify that Ansible successfully installed by running: 
+Verify that Ansible is successfully installed by running: 
 
 ----
 ansible --version 
@@ -110,29 +110,33 @@ at: http://cygwin.com/install.html .
 
 The following list of packages are required during the Cygwin installation:
 
-* curl
-* python (2.7.x)
-* python-jinja
-* python-crypto
-* python-openssl
-* python-setuptools
-* git (1.7.x)
-* vim
-* openssh
-* openssl
-* openssl-devel
-* gcc-g++
-* libffi-devel
-* libmysqlclient-devel
+* `curl`
+* `python (2.7.x)`
+* `python-jinja`
+* `python-crypto`
+* `python-openssl`
+* `python-setuptools`
+* `git (1.7.x)`
+* `vim`
+* `openssh`
+* `openssl`
+* `openssl-devel`
+* `gcc-g++`
+* `libffi-devel`
+* `libmysqlclient-devel`
 
 After this install `PyYAML` and `Jinja2` separately, as they are not 
 available in Cygwin.
 
-Open Cygwin and execute the following actions:
+//TODO: Where do I get the above packages?
+
+Once installed, open Cygwin to complete the installation of Ansible.
+
+//TODO: What is the SSH key needed here for? 
 
 .Generate a SSH key
 ----
-ssh-keygen
+ssh-keygen -t rsa
 ----
 
 .Install `pip`
@@ -154,7 +158,7 @@ In this lab we will use a Sublime Text to write the ansible playbooks. To instal
 
 == Linux Install Instructions
 
-The following subsections provide steps to install `ansible` and `git` for
+The following subsections provide steps to install Ansible and `git` for
 the following Linux distributions:
 
 * Fedora
@@ -163,7 +167,7 @@ the following Linux distributions:
 
 === Fedora - Ansible & Git Installation Instructions
 
-The preferred way to install `ansible` and `git` on Fedora is using the 
+The preferred method to install Ansible and `git` on Fedora is using the 
 `dnf` package manager.
 
 As a `sudo` user, 
@@ -175,7 +179,7 @@ sudo dnf -y install ansible git
 
 === CentOS - Ansible & Git Installation Instructions
 
-The preferred way to install `ansible` and `git` on CentOS is using the 
+The preferred method to install Ansible and `git` on CentOS is using the 
 `yum` package manager.
 
 As a `sudo` user, 
@@ -187,7 +191,7 @@ sudo yum -y  install ansible git
 
 === Ubuntu - Ansible & Git Installation Instructions
 
-The preferred way to install `ansible` and `git` on Ubuntu is using the 
+The preferred method to install Ansible and `git` on Ubuntu is using the 
 `apt-get` command line tool that works with APT software packages.
 
 As a `sudo` user, 
@@ -213,13 +217,15 @@ In Linux we will use vi/vim/nano to edit and manipulate files.
 
 //TODO: Maybe we add steps for how to do the install of VBox for Fedora system?
 
-If installing `ansible` and/or `git` on your laptop/workstation is not your
+If installing Ansible and/or `git` on your laptop/workstation is not your
 preferred method, a VirtualBox image is provided that may be used as your
 workstation to complete the corresponding labs. 
 
-Prior to using the provided http://people.redhat.com/juvillar/ova/ansible-mgmt.ova[[Fedora VirtualBox Image],
+Prior to using the provided http://people.redhat.com/juvillar/ova/ansible-mgmt.ova[Fedora VirtualBox Image],
 download and install VirtualBox for your corresponding Operating System. Visit 
 https://www.virtualbox.org/wiki/Downloads to complete the installation.
+
+Below is a table with the specifics regarding the VirtualBox image.
 
 |====
 | *VirtualBox Image Location* | *username* | *password*
