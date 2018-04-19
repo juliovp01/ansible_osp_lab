@@ -41,6 +41,8 @@ be seen below:
 .Ansible Architecture
 image::images/ansible_architecture.png[float="center",align="center"]
 
+{nbsp} + 
+
 The subsequent sections go into the installation of Ansible and their 
 prerequisites.
 
