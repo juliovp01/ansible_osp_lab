@@ -1,5 +1,44 @@
 = Lab 1: Lab Setup
 
+== Overview of Ansible
+
+Ansible is an open source automation platform that can manage hosts over
+the `ssh` protocol. Ansible is described in three words: Simple, Powerful, Agentless.
+It is considered simple due to providing human-readable automation. The playbooks
+are written using http://docs.ansible.com/ansible/latest/reference_appendices/YAMLSyntax.html[YAML syntax]
+that requires no coding skills and each task within the playbook is executed in
+order. Ansible is considered powerful because of its flexibility to automate
+your entire app lifecycle. Ansible is agentless thus doesn't require installing
+anything on the managed remote hosts. It uses OpenSSH or WinRM to run tasks and
+execute Ansible modules to the managed hosts. 
+
+== Ansible Architecture
+
+The Ansible architecture consists of two types of machines labeled: _Control Machine_
+and _Managed Nodes_. Ansible is installed on the control machine. The control
+machine contains all of the playbooks that are to be run against your managed
+nodes. The managed nodes are listed in an _inventory_ file. The inventory
+of the managed hosts is either a simple static text file or a dynamic inventory
+file created by a set of scripts written by the end user to determine the IPs or the
+hostname of the hosts that are to be managed. For the purposes of this lab, the
+inventory files will be static text file. Inventory files include the ability
+to group nodes together for easier manageability. For example grouping all 
+the database nodes in a group labeled database.
+
+After Ansible takes the input of the nodes to be managed, a playbook that contains
+at least one play is executed for the managed nodes that are selected. A play
+executes a series of tasks in order on the managed nodes. Each task runs a
+specific Ansible module that is specified within your Ansible playbook. The tasks
+are what may change the state of the managed hosts as they may install packages
+on a system, modify files, and/or change configuration settings. For the
+purposes of this lab, the main focus will be on using OpenStack Ansible modules
+to manage our OpenStack node. 
+
+A pictorial representation of Ansible's architecture from the Ansible site can
+be seen below:
+
+image::images/ansible_architecture.png[]
+
 == Installation of Prerequisite Tools
 
 In order to use Ansible playbooks against our OpenStack environment, we must
