@@ -1,150 +1,202 @@
-= Lab 1: Installing prerequisites tools
+= Lab 1: Lab Setup
 
-=== Objective: 
+== Installation of Prerequisite Tools
 
-The objective of this lab is to install the prerequisites needed for this session in your workstation including: 
+In order to use Ansible playbooks against our OpenStack environment, we must
+first install the required prerequisites. Your workstation requires the following
+to be installed (if not already):
 
 * https://www.ansible.com/[Ansible]
 * https://git-scm.com/[Git]
-* Text editor
+* Text editor (such as https://www.sublimetext.com/3[Sublime Text])
 
-== macOS Install Intructions
+NOTE: The Fedora VirtualBox image pre-installs all the required prerequisites.
+Please reference the section <<vbsetup, VirtualBox Setup>> if not planning on
+using your local laptop/workstation. The install instructions for the different
+OS vendors may be skipped if using the VirtualBox image. 
 
-=== Installing Ansible in macOS
+== macOS Install Instructions
 
-The preferred way to install ansible on a Mac is via "pip", the Python package manager. In order to do that, launch your Terminal.
+=== Installing Ansible (Method #1)
 
-Install Pip
+The preferred way to install Ansible on the macOS is via the Python package 
+manager `pip`. Launch a terminal and execute the following commands:
 
-[source,]
+.Installation of `pip`
 ----
 sudo easy_install pip
 ----
 
-Install Ansible with Pip
-
-[source,]
+.Installation of Ansible via `pip`
 ----
 sudo pip install ansible 
 ----
 
-There is a second way to get Ansible installed in macOS, using https://brew.sh[Homebrew]. To do so, execute the following command: 
+Verify that Ansible is successfully installed by running: 
 
-[source,]
-----
-brew install ansible
-----
-
-After this let's verify that Ansible is installed from your Terminal by executing: 
-
-[source,]
 ----
 ansible --version 
 ----
 
-You could get an output similar to: 
+The expected output is similar to the following:
 
 ----
-$ ansible --version
-ansible 2.0.0.2
-  config file =
-  configured module search path = Default w/o overridesansible --version
+$ ansible 2.5.0
+  config file = /etc/ansible/ansible.cfg
+  configured module search path = [u'/home/rlopez/.ansible/plugins/modules', u'/usr/share/ansible/plugins/modules']
+  ansible python module location = /usr/lib/python2.7/site-packages/ansible
+  executable location = /usr/bin/ansible
+  python version = 2.7.14 (default, Feb 27 2018, 20:43:24) [GCC 7.3.1 20180130 (Red Hat 7.3.1-2)]
+
+----
+
+=== Installing Ansible (Method #2)
+
+A second method of deploying Ansible for the macOS, is using https://brew.sh[Homebrew]. 
+Launch a terminal and execute the following commands:
+
+.Installation of `brew`
+----
+brew install ansible
+----
+
+Verify that Ansible is successfully installed by running: 
+
+----
+ansible --version 
+----
+
+The expected output is similar to the following:
+
+----
+$ ansible 2.5.0
+  config file = /etc/ansible/ansible.cfg
+  configured module search path = [u'/home/rlopez/.ansible/plugins/modules', u'/usr/share/ansible/plugins/modules']
+  ansible python module location = /usr/lib/python2.7/site-packages/ansible
+  executable location = /usr/bin/ansible
+  python version = 2.7.14 (default, Feb 27 2018, 20:43:24) [GCC 7.3.1 20180130 (Red Hat 7.3.1-2)]
+
 ----
 
 === Installing Git in macOS
+ 
+Within the macOS, `git` is installed with the Xcode Command Line Tools. Prior
+to installation of `git`, verify if `git` is already installed within the macOS
+as follows via a terminal:
 
-In macOS git is installed with the  Xcode Command Line Tools. First verify if git is already installed in the Operating System by launching a Terminal and typing: 
-
-[source,]
+[source]
 ----
 git --version
 ----
 
-If git is not installed a version of Git could be downloaded and installed https://git-scm.com/download/mac[Here].
+If `git` is not installed, a version of `git` could be downloaded and installed 
+https://git-scm.com/download/mac[here].
 
-=== Installing a Text editor on macOS
+////
+=== Installing text editor (Sublime Text) on macOS
 
-In this lab we will use a Sublime Text to write the ansible playbooks. To install Sublime Text download the latest version at: https://www.sublimetext.com/3 . 
+//TODO: Do we really want to recommend a text editor?
+
+In this lab, we will use a Sublime Text to write the ansible playbooks. To install Sublime Text download the latest version at: https://www.sublimetext.com/3 . 
+////
 
 == Microsoft Windows Install Instructions 
 
 === Installing Ansible and Git in Windows 
 
-Ansible in Microsoft Windows could be installed using http://cygwin.com[Cygwin]. For instructions in how to install Cygwin visit the instructions in the following link: http://cygwin.com/install.html.
+Ansible in Microsoft Windows could be installed using http://cygwin.com[Cygwin]. 
+Installation instructions on how to install Cygwin are located 
+at: http://cygwin.com/install.html .
 
-Here is the list of packages that need to be selected in the Cygwin installation process as dependencies: 
+The following list of packages are required during the Cygwin installation:
 
-* curl
-* python (2.7.x)
-* python-jinja
-* python-crypto
-* python-openssl
-* python-setuptools
-* git (1.7.x)
-* vim
-* openssh
-* openssl
-* openssl-devel
-* gcc-g++
-* libffi-devel
-* libmysqlclient-devel
+* `curl`
+* `python (2.7.x)`
+* `python-jinja`
+* `python-crypto`
+* `python-openssl`
+* `python-setuptools`
+* `git (1.7.x)`
+* `vim`
+* `openssh`
+* `openssl`
+* `openssl-devel`
+* `gcc-g++`
+* `libffi-devel`
+* `libmysqlclient-devel`
 
-After this install PyYAML and Jinja2 separately, as they are not available in Cygwin.
+After this install `PyYAML` and `Jinja2` separately, as they are not 
+available in Cygwin.
 
-Open Cygwin and execute all the following actions:
+//TODO: Where do I get the above packages?
 
+Once installed, open Cygwin to complete the installation of Ansible.
 
-Generate an SSH keys:
+//TODO: What is the SSH key needed here for? 
 
-[source,]
+.Generate a SSH key
 ----
-ssh-keygen
+ssh-keygen -t rsa
 ----
 
-Install pip:
-
-[source,]
+.Install `pip`
 ----
 easy_install-2.7 pip
 ----
 
-Install Ansible:
-
-[source,]
+.Install Ansible
 ----
 pip install ansible
 ----
 
-==== Installing a Text editor on macOS
+////
+==== Installing a Text editor on Windows
 
 In this lab we will use a Sublime Text to write the ansible playbooks. To install Sublime Text download the latest version for Microsoft Windows at: https://www.sublimetext.com/3 .
 
+////
 
 == Linux Install Instructions
 
-=== Installing Ansible and Git in Fedora
+The following subsections provide steps to install Ansible and `git` for
+the following Linux distributions:
 
-To install Ansible and Git in Fedora execute: 
+* Fedora
+* CentOS
+* Ubuntu
 
-[source,]
+=== Fedora - Ansible & Git Installation Instructions
+
+The preferred method to install Ansible and `git` on Fedora is using the 
+`dnf` package manager.
+
+As a `sudo` user, 
+
+.Install Ansible and Git
 ----
 sudo dnf -y install ansible git
 ----
 
-=== Installing Ansible and Git in CentOS
+=== CentOS - Ansible & Git Installation Instructions
 
-To install Ansible and Git in CentOS execute:
+The preferred method to install Ansible and `git` on CentOS is using the 
+`yum` package manager.
 
-[source,]
+As a `sudo` user, 
+
+.Install Ansible and Git
 ----
 sudo yum -y  install ansible git
 ----
 
-=== Install Ansible and Git in Ubuntu
+=== Ubuntu - Ansible & Git Installation Instructions
 
-To install Ansible and Git in Ubuntu: 
+The preferred method to install Ansible and `git` on Ubuntu is using the 
+`apt-get` command line tool that works with APT software packages.
 
-[source,]
+As a `sudo` user, 
+
+.Install Ansible and Git
 ----
 sudo apt-get update 
 sudo apt-get install software-properties-common
@@ -153,18 +205,32 @@ sudo apt-get update
 sudo apt-get install ansible git
 ----
 
+////
+
 ==== Installing a Text editor
 
 In Linux we will use vi/vim/nano to edit and manipulate files. 
+////
 
-== Pre-installed VirtualBox Image
+[[vbsetup]]
+== VirtualBox Setup (Pre-Installed Image)
 
-Another way to get all the tooling needed for the labs in scope today is to download the following Virtual Machine Appliance (running Fedora) http://people.redhat.com/juvillar/ova/ansible-mgmt.ova[HERE]. 
+//TODO: Maybe we add steps for how to do the install of VBox for Fedora system?
 
-In order to use this image you will need to run VirtualBox in your workstation. To download and install VirtualBox for your Operating System please visit: https://www.virtualbox.org/wiki/Downloads 
+If installing Ansible and/or `git` on your laptop/workstation is not your
+preferred method, a VirtualBox image is provided that may be used as your
+workstation to complete the corresponding labs. 
 
-Virtual Machine credentials for the appliance are: ansible / ansible
+Prior to using the provided http://people.redhat.com/juvillar/ova/ansible-mgmt.ova[Fedora VirtualBox Image],
+download and install VirtualBox for your corresponding Operating System. Visit 
+https://www.virtualbox.org/wiki/Downloads to complete the installation.
 
+Below is a table with the specifics regarding the VirtualBox image.
+
+|====
+| *VirtualBox Image Location* | *username* | *password*
+| http://people.redhat.com/juvillar/ova/ansible-mgmt.ova | `ansible` | `ansible`
+|====
 
 
 
