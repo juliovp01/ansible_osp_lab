@@ -39,7 +39,7 @@ be seen below:
 
 [.text-center]
 .Ansible Architecture
-image::images/ansible_architecture.png[align="center"]
+image::images/ansible_architecture.png[float="center",align="center"]
 
 == Installation of Prerequisite Tools
 
