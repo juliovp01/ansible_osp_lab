@@ -1,1 +1,2 @@
-= Lab 2: 
+= Lab 2: Introduction to Managing OpenStack with Ansible
+

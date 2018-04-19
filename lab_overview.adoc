@@ -6,18 +6,18 @@ _As OpenStack popularity and complexity continue to rise and new feature sets
 are introduced regularly, findings ways to simplify and produce consistent 
 results is always at the forefront of any system administrator’s mind. With the 
 use of Ansible, an agentless IT automation technology, a system administrator 
-can do just that.
+can do just that._
 
-The goal of this lab is to provide a brief introduction to Ansible, the 
+_The goal of this lab is to provide a brief introduction to Ansible, the 
 usability of Ansible playbooks, and then show how to leverage key Ansible 
 modules to better manage and simplify OpenStack environments. These management 
-playbooks will consist of typical administrative tasks such as:
+playbooks will consist of typical administrative tasks such as:_
 
-* Managing Networks
-* Managing Instances
-* Managing Resources
+* _Managing Networks_
+* _Managing Instances_
+* _Managing Resources_
 
-This lab is best suited for system and OpenStack administrators looking for 
+_This lab is best suited for system and OpenStack administrators looking for 
 ways to automate their day-to-day OpenStack administrative tasks._
 
 
