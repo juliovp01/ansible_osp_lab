@@ -12,6 +12,74 @@ There are two central concepts to understand before writing playbooks:
 
 * A **playbook**: is a text file that contains a list of one or more plays to run in order
 
+== Playbook format
+
+To understand better the structure of a playbook, let review first an ad-hoc command from Lab 2.
+
+[source,]
+----
+$ ansible all -m command -a "hostname"
+----
+
+The previous command should report the hostname of the system or systems used as target. 
+
+This can be rewritten as a simple single-task play and saved in a playbook. The resulting playbook might appear as follows:
+
+[source,]
+----
+---
+- name: Execute raw command to get hostname from system
+  hosts: all
+  tasks:
+    - name: Hostname command
+      command: hostname
+...
+----
+
+A *playbook* is a text file written in http://docs.ansible.com/ansible/latest/reference_appendices/YAMLSyntax.html[YAML] format, and is normally saved with the extension yml.
+The playbook primarily uses indentation with space characters to indicate the structure of its data. YAML doesn't place strict requirements on how many spaces are used for the indentation, but there are two basic rules.
+
+* Data elements at the same level in the hierarchy (such as items in the same list) must have the same indentation.
+* Items that are children of another item must be indented more than their parents.
+You can also add blank lines for readability.
+
+The playbook begins with a line consisting of three dashes (---) as a start of document marker and it is a good practice to end each playbook with three dots (...) as an end of document marker. 
+
+In between those markers, the playbook is defined as a list of plays. An item in a YAML list starts with a single dash (-) followed by a space. For example, a YAML list might appear as follows:
+
+[source,]
+----
+- nova
+- glance 
+- neutron
+- cinder
+- keystone
+- manila
+----
+
+The play itself is a collection (an associative array or hash/dictionary) of key: value pairs. Keys in the same play should have the same indentation. The following example describes a YAML hash/dictionary with three keys. The first two keys have simple values. The third has a list of three items as a value.
+
+[source,]
+----
+name: Example
+hosts: Fileservers
+tasks: 
+  - one
+  - two
+  - three
+----
+
+In the previous example, the play has three keys: name, hosts, and tasks. These keys all have the same indentation because they belong to the play. The first line of the example play starts with a dash and a space (indicating the play is the first item of a list), and then the first key, the name attribute. 
+
+[source,]
+____
+*The order in which the plays and tasks are listed in a playbook is important, because
+Ansible runs them in the same order.*
+____
+
+== Running playbooks
+
+
 
 
 
