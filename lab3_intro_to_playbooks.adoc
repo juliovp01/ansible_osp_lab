@@ -119,6 +119,55 @@ Another best practice while executing playbooks is to perform a dry run. Dry run
 [ansible@ansiblehost ~]$ ansible-playbook -c openstack-operator.yml 
 ----
 
+== Writing a simple Ansible Playbook
 
 
+At this point, we know how to write and execute basic playbooks. In this section, we will put everything together by using writing a playbook that will perform some basic tasks related to OpenStack. 
 
+To do that, let's create a file in your editor of choice, this file will be named: **prepare-for-lab.yml**. And we are going to perform two specific tasks: 
+
+* We are going to install some required packages to interact with OpenStack from Ansible: 
+    - shade: shade is a simple client library for interacting with OpenStack clouds. More details could be found https://pypi.org/project/shade/[Here].
+* We are going to use Ansible to download the latest CirrOS image.
+
+First, lets create the first part of our playbook that defines the name, target, and the first task to install shade:
+
+[source,]
+----
+- name: Prepare for Lab
+  hosts: localhost
+  tasks:
+    - name: Installing Shade from Pypi
+      shell: pip install shade --upgrade
+----
+
+Now, let's continue by creating a tasks to download the latest version of CirrOS: 
+
+----
+    - name: Downloading CirrOS
+      get_url:
+        url: http://download.cirros-cloud.net/0.4.0/cirros-0.4.0-x86_64-disk.img
+        dest: /tmp/cirros-latest.img
+----
+
+Everything toguether should look like the following (prepare-for-lab.yml):
+[source,]
+----
+---
+- name: Prepare for Lab
+  hosts: localhost
+  tasks:
+    - name: Installing Shade from Pypi
+      shell: pip install shade --upgrade
+    - name: Downloading CirrOS
+      get_url:
+        url: http://download.cirros-cloud.net/0.4.0/cirros-0.4.0-x86_64-disk.img
+        dest: /tmp/cirros-latest.img
+...
+----
+
+Now, let's execute the playbook:
+
+----
+[ansible@ansiblehost ~]$ ansible-playbook prepare-for-lab.yml 
+----
