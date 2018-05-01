@@ -1,3 +1,173 @@
-= Lab 2: Introduction to Playbooks
+= Lab 3: Introduction to Playbooks
 
-In lab three, we will focus on learning how to create and structure Ansible Playbooks. Later in the next labs, this information will be handy to interact with programmatically against our OpenStack instance.
+In lab three, we will focus on learning how to create and structure Ansible Playbooks. After completing this section, you should be able to write basic ansible playbooks and use the *ansible-playbook* command.This information will be handy to interact programmatically against our OpenStack instance in later labs.
+
+== Ansible Playbooks 
+
+In [underline]#Lab 2# you learned how to run *ad-hoc* commands with Ansible. Ad-hoc commands can run a single, simple task. The real power of Ansible is in how to use playbooks to run multiple, complex tasks against a system or a group of systems in an easily repeatable way.
+
+There are two central concepts to understand before writing playbooks: 
+
+* A **play**: is an ordered set of tasks which should be run against hosts selected from your inventory. 
+
+* A **playbook**: is a text file that contains a list of one or more plays to run in order
+
+== Playbook format
+
+To understand better the structure of a playbook, let review first an ad-hoc command from Lab 2.
+
+[source,]
+----
+$ ansible all -m command -a "hostname"
+----
+
+The previous command should report the hostname of the system or systems used as target. 
+
+This can be rewritten as a simple single-task play and saved in a playbook. The resulting playbook might appear as follows:
+
+[source,]
+----
+---
+- name: Execute raw command to get hostname from system
+  hosts: all
+  tasks:
+    - name: Hostname command
+      command: hostname
+...
+----
+
+A *playbook* is a text file written in http://docs.ansible.com/ansible/latest/reference_appendices/YAMLSyntax.html[YAML] format, and is normally saved with the extension yml.
+The playbook primarily uses indentation with space characters to indicate the structure of its data. YAML doesn't place strict requirements on how many spaces are used for the indentation, but there are two basic rules.
+
+* Data elements at the same level in the hierarchy (such as items in the same list) must have the same indentation.
+* Items that are children of another item must be indented more than their parents.
+You can also add blank lines for readability.
+
+The playbook begins with a line consisting of three dashes (---) as a start of document marker and it is a good practice to end each playbook with three dots (...) as an end of document marker. 
+
+In between those markers, the playbook is defined as a list of plays. An item in a YAML list starts with a single dash (-) followed by a space. For example, a YAML list might appear as follows:
+
+[source,]
+----
+- nova
+- glance 
+- neutron
+- cinder
+- keystone
+- manila
+----
+
+The play itself is a collection (an associative array or hash/dictionary) of key: value pairs. Keys in the same play should have the same indentation. The following example describes a YAML hash/dictionary with three keys. The first two keys have simple values. The third has a list of three items as a value.
+
+[source,]
+----
+name: Example
+hosts: Fileservers
+tasks: 
+  - one
+  - two
+  - three
+----
+
+In the previous example, the play has three keys: name, hosts, and tasks. These keys all have the same indentation because they belong to the play. The first line of the example play starts with a dash and a space (indicating the play is the first item of a list), and then the first key, the name attribute. 
+
+[source,]
+____
+*The order in which the plays and tasks are listed in a playbook is important, because
+Ansible runs them in the same order.*
+____
+
+== Running playbooks
+
+
+Now that we know the structure of a playbook and how easy could be to write one, let's discuss the ansible-playbook command. The ansible-playbook command is used to run playbooks and is executed in the control node. Using this command could be as simple as the following example: 
+
+[source,]
+----
+[ansible@ansiblehost ~]$ ansible-playbook openstack-operator.yml 
+----
+
+After the playbook is executed, output is generated to show the play and tasks.
+
+In general, tasks in Ansible playbooks are idempotent, and it is safe to run the playbook multiple times. If the targeted managed hosts are already in the correct state, no changes should be made
+
+=== Verifying the Syntax before running
+
+Before executing a playbook, it is best practice to perform a verification to ensure that the syntax of its contents is correct. The ansible-playbook command offers a --syntax-check option which can be used to verify the syntax of a playbook file; it is essential to notice that this will only check the syntax and not if the code is correct for the intended use. The following example shows the successful syntax verification of a playbook.
+
+[source,]
+----
+[ansible@ansiblehost ~]$ ansible-playbook --syntax-check openstack-operator.yml 
+----
+
+When syntax verification fails, a syntax error is reported.  The following example shows the failed syntax verification of a playbook : 
+
+[source,]
+----
+[ansible@ansiblehost ~]$ ansible-playbook --syntax-check openstack-operator.yml 
+ERROR! Syntax Error while loading YAML.
+The error appears to have been in '/data/ansible/openstack-operator.yml': line 8, column 2, but
+may be elsewhere in the file depending on the exact syntax problem.
+----
+
+=== Dry runs
+
+Another best practice while executing playbooks is to perform a dry run. Dry runs are invoked with the -c option, which runs Ansible to report the changes that would have occurred if the playbook was executed, but without making actual changes to the managed hosts. 
+
+[source,]
+----
+[ansible@ansiblehost ~]$ ansible-playbook -c openstack-operator.yml 
+----
+
+== Writing a simple Ansible Playbook
+
+
+At this point, we know how to write and execute basic playbooks. In this section, we will put everything together by using writing a playbook that will perform some basic tasks related to OpenStack. 
+
+To do that, let's create a file in your editor of choice, this file will be named: **prepare-for-lab.yml**. And we are going to perform two specific tasks: 
+
+* We are going to install some required packages to interact with OpenStack from Ansible: 
+    - shade: shade is a simple client library for interacting with OpenStack clouds. More details could be found https://pypi.org/project/shade/[Here].
+* We are going to use Ansible to download the latest CirrOS image.
+
+First, lets create the first part of our playbook that defines the name, target, and the first task to install shade:
+
+[source,]
+----
+- name: Prepare for Lab
+  hosts: localhost
+  tasks:
+    - name: Installing Shade from Pypi
+      shell: pip install shade --upgrade
+----
+
+Now, let's continue by creating a tasks to download the latest version of CirrOS: 
+
+----
+    - name: Downloading CirrOS
+      get_url:
+        url: http://download.cirros-cloud.net/0.4.0/cirros-0.4.0-x86_64-disk.img
+        dest: /tmp/cirros-latest.img
+----
+
+Everything toguether should look like the following (prepare-for-lab.yml):
+[source,]
+----
+---
+- name: Prepare for Lab
+  hosts: localhost
+  tasks:
+    - name: Installing Shade from Pypi
+      shell: pip install shade --upgrade
+    - name: Downloading CirrOS
+      get_url:
+        url: http://download.cirros-cloud.net/0.4.0/cirros-0.4.0-x86_64-disk.img
+        dest: /tmp/cirros-latest.img
+...
+----
+
+Now, let's execute the playbook:
+
+----
+[ansible@ansiblehost ~]$ ansible-playbook prepare-for-lab.yml 
+----
