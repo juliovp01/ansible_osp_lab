@@ -1,3 +1,17 @@
-= Lab 2: Introduction to Playbooks
+= Lab 3: Introduction to Playbooks
 
-In lab three, we will focus on learning how to create and structure Ansible Playbooks. Later in the next labs, this information will be handy to interact with programmatically against our OpenStack instance.
+In lab three, we will focus on learning how to create and structure Ansible Playbooks. After completing this section, you should be able to write basic ansible playbooks and use the *ansible-playbook* command.This information will be handy to interact programmatically against our OpenStack instance in later labs.
+
+== Ansible Playbooks 
+
+In [underline]#Lab 2# you learned how to run *ad-hoc* commands with Ansible. Ad-hoc commands can run a single, simple task. The real power of Ansible is in how to use playbooks to run multiple, complex tasks against a system or a group of systems in an easily repeatable way.
+
+There are two central concepts to understand before writing playbooks: 
+
+* A **play**: is an ordered set of tasks which should be run against hosts selected from your inventory. 
+
+* A **playbook**: is a text file that contains a list of one or more plays to run in order
+
+
+
+
