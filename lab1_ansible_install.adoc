@@ -208,6 +208,7 @@ The following subsections provide steps to install Ansible and `git` for
 the following Linux distributions:
 
 * Fedora
+* Red Hat Enterprise Linux (RHEL)
 * CentOS
 * Ubuntu
 
@@ -221,6 +222,25 @@ As a `sudo` user,
 .Install Ansible and Git
 ----
 sudo dnf -y install ansible git
+----
+
+=== RHEL - Ansible & Git Installation Instructions
+
+The preferred method to install Ansible and `git` on RHEL is using the 
+`yum` package manager.
+
+As a `sudo` user, perform the following steps.
+
+.Enable the following repositories
+----
+sudo subscription-manager repos --enable=rhel-7-server-rpms --enable=rhel-7-server-ansible-2-rpms
+----
+
+As a `sudo` user, install the following packages
+
+.Install Ansible and Git
+----
+sudo yum -y install ansible git
 ----
 
 === CentOS - Ansible & Git Installation Instructions
