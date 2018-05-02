@@ -1,0 +1,410 @@
+= Lab 5: Task Control, Handlers, Registered Variables, Tags
+
+In lab five, we take a closer look at how to create conditionals and loops,
+how to implement handlers and tags all within an Ansible playbook.
+
+== Conditionals
+
+When executing tasks, a conditional may be used in order to determine if a 
+particular task should be executed or skipped. This is done using the `when`
+statement in a task. For example:
+
+----
+- hosts: all
+  vars: 
+    package: httpd
+tasks:
+  - name: "Install my {{ package }}"
+    yum:
+      name: "{{ package }}"
+    when: package is defined
+----
+
+The above example states that for all hosts within the hosts file, with a 
+variable labeled _package_ that equals to _httpd_, install the _package_ when the
+package is defined. Since the variable _package_ is defined with a value, the
+task will execute. 
+
+== Loops
+
+The purpose of loops within Ansible is to save an administrator time on having
+to write multiples of the same task that uses the same module for different 
+values. For example, if I needed to install X number of packages, an administrator
+could create one Ansible task that installs those packages using the `yum`
+module by iterating over a list of packages to ensure they are installed. 
+An example is shown below.
+
+Without loops, say we wanted to install `httpd`, `vim`, `chrony`. The playbook
+would include the following tasks:
+
+----
+- name: Install httpd
+  yum:
+    name: httpd
+    state: present
+
+- name: Install vim
+  yum:
+    name: vim
+    state: present
+
+- name: Install chrony
+  yum:
+    name: chrony
+    state: present
+----
+
+The above is inefficient, because I'm effectively doing the same task just with
+a different value. Instead a loop can be used (`loop`) to 
+construct a list of packages to install as follows:
+
+----
+- name: Install packages
+  yum:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - httpd
+    - vim
+    - chrony
+----
+
+NOTE: It is important to use the loop variable `"{{ item }}"` when defining the 
+argument as this is a keyword used that lets Ansible know to use the list found 
+within `with_items`. The syntax must be exactly as it appears here: `"{{ item }}"`
+ otherwise you will get a syntax error when running your Ansible playbook.
+
+=== Loops over Lists of Dictonaries
+
+At times, the items in your list do not contain simple values but instead each
+item in the list is a dictionary keypair. An example is shown below.
+
+----
+- name: Create user and assign to appropriate group
+  user:
+    name: "{{ item.name }}"
+    state: present
+    groups: "{{ item.groups }}"
+  loop:
+    - { name: 'julio', groups: 'consulting' }
+    - { name: 'roger', groups: 'engineering' }
+----
+
+The above task would create a user for each item in the list. In this particular
+case, each item in the loop contains a name of a user and the group they are
+part of. The name argument contains the `"{{ item.name }}"` while the groups
+argument contains the `"{{ item.groups }}`
+
+=== Nested Loops
+
+At times there might be a loop within a loop that is required to properly
+iterate through a list of items. A nested loop requires at least two lists and a
+task that iterates each item in the first list in combination with each item in
+the second list.
+
+An example from the Ansible 2.5, documentation is shown below.
+
+----
+- name: give users access to multiple databases
+  mysql_user:
+    name: "{{ item[0] }}"
+    priv: "{{ item[1] }}.*:ALL"
+    append_privs: yes
+    password: "foo"
+  loop: "{{ query('nested', [ 'alice', 'bob' ], [ 'clientdb', 'employeedb', 'providerdb' ]) }}"
+----
+
+The example above iterates six times. It adds the privileges for user _alice_
+to each of the three databases: _clientdb_, _employeedb_, _providerdb_. It then
+iterates again this time using the _bob_ user and adds the three databases.
+
+=== Guided Exercise: Using Loops
+
+In this exercise, we want to create two security groups, `master-sg` and `app-sg`
+using the undercloud server.
+We will be using the Ansible modules `os_security_group` and 
+`os_security_group_rule` to set our OpenStack security groups. Open up the 
+following TCP ports on the `master-sg` group: 22, 80, and 443. Within the `app-sg`,
+only open the TCP ports 80 and 443. The goal of this exercise is to use loops were
+appopriate.
+
+Using the undercloud host, setup the first lines of the playbook.
+
+----
+- hosts: undercloud
+  tasks:
+----
+
+
+Create two security groups labeled `master-sg` and `app-sg` using the 
+`os_security_group` module and use a loop.
+
+----
+  - name: Create the master-sg and app-sg security groups
+    os_security_group:
+      cloud: mycloud
+      state: present
+      name: "{{ item }}"
+    loop:
+      - master-sg
+      - app-sg
+----
+
+Create a task that uses a nested loop and enables the common ports 80 and 43
+for each of the security groups. 
+
+----
+  - name: Open the following common ports for the master-sg and app-sg group
+    os_security_group_rule:
+      cloud: mycloud
+      security_group: "{{ item[0] }}"
+      protocol: tcp
+      port_range_min: "{{ item[1] }}"
+      port_range_max: "{{ item[1] }}"
+    loop: "{{ query('nested', [ 'master-sg', 'app-sg' ], [ '80', '443' ]) }}"
+----
+
+Finally, create the final task that enables port 22 on the `master-sg` security
+group.
+
+----
+  - name: Open the ssh port for the master-sg 
+    os_security_group_rule:
+      cloud: mycloud
+      security_group: master-sg
+      protocol: tcp
+      port_range_min: 22
+      port_range_max: 22
+----
+
+The below is one answer to the above exercise.
+
+----
+- hosts: undercloud
+  tasks:
+
+  - name: Create the master-sg and app-sg security groups
+    os_security_group:
+      cloud: mycloud
+      state: present
+      name: "{{ item }}"
+    loop:
+      - master-sg
+      - app-sg
+
+  - name: Open the following common ports for the master-sg and app-sg group
+    os_security_group_rule:
+      cloud: mycloud
+      security_group: "{{ item[0] }}"
+      protocol: tcp
+      port_range_min: "{{ item[1] }}"
+      port_range_max: "{{ item[1] }}"
+    loop: "{{ query('nested', [ 'master-sg', 'app-sg' ], [ '80', '443' ]) }}"
+
+  - name: Open the ssh port for the master-sg 
+    os_security_group_rule:
+      cloud: mycloud
+      security_group: master-sg
+      protocol: tcp
+      port_range_min: 22
+      port_range_max: 22
+----
+
+NOTE: The argument cloud and value _mycloud_ comes from a _clouds.yml_ file
+within the _/etc/openstack_ directory. This _clouds.yml_ file was provided in
+the beginning of this course.
+
+//TODO: We need to get an example of the clouds.yml in earlier section
+////
+clouds:
+  mycloud:
+    auth:
+      auth_url: http://10.19.114.177:5000
+      username: testdemo
+      password: testdemo
+      project_name: testdemo-tenant
+    region_name: regionOne
+  admin:
+    auth:
+      auth_url: http://10.19.114.177:5000
+      username: admin
+      password: YZagwYUFPMpm9pyWe9sWYvNJn
+      project_name: admin
+    region_name: regionOne
+ansible:
+  use_hostnames: True
+  expand_hostvars: False
+////
+
+== Handlers
+
+Handlers are a special task that are inactive unless triggered by calling
+the `notify` statement. When the `notify` statement is called, all the tasks
+within a playbook are run and then they are followed by the handler tasks. 
+The handler tasks are all written under a special section labeled _handlers_.
+
+Why are handlers important?
+
+Handlers are great for when you need to for example restart a service (say you
+made a configuration change to a service) or you need to reboot a host after the
+playbook changes have been made. 
+
+The below is an example of copying a configuration file to a certain destination
+and requiring the `http` service to be restarted after the task is complete.
+
+----
+
+  tasks:
+  - name: Copying a example.conf file
+    copy:
+      src: /local/path/to/example.conf
+      dest: /remote/path/to/example.conf
+    notify:
+      - restart_apache
+
+  handlers:
+  - name: restart_apache
+    service:
+      name: httpd
+      state: restarted
+----
+
+The above example goes through all the tasks (in this case, we just have one
+task using the copy module), it then calls the notify handler specific to the 
+handler task labeled _restart_apache_. Once all the tasks are complete, the 
+handler with the name _restart_apache_ is invoked and it restarts the `httpd`
+service.
+
+== Registered Variables
+
+At times there might be a set of output that a particular Ansible task does
+that you want to capture. In order to capture this value, we need to store it 
+in a variable using the `register` statement.
+
+An example from the Ansible 2.5, documentation is shown below.
+
+----
+   tasks:
+
+   - name: Run a script named foo
+     shell: /usr/bin/foo
+     register: foo_result
+
+   - name: Run a script named bar
+     shell: /usr/bin/bar
+     when: foo_result.rc == 5
+----
+
+The first task runs  a script named foo and captures the result of foo and 
+stores it in a variable labeled _foo_result_. The second task that runs a script
+named bar only executes when the return code (rc) of foo_result is equal to 5.
+
+If interested in seeing the different types of values that a registered variable
+can return, you may use the `debug` module to display the different values.
+
+An example is shown below.
+
+----
+   tasks:
+
+   - name: Run a script named foo
+     shell: /usr/bin/foo
+     register: foo_result
+
+   - name: debugging the variable foo_result
+     debug:
+       var: foo_result
+----
+
+
+
+
+Due to time limitations, we will not cover:
+
+- Tags
+- Special variables
+
+Ensure to visit the http://docs.ansible.com/ansible/latest/index.html[Ansible] 
+documentation for more details.
+
+
+=== Guided Exercise: Using Register and Conditionals
+
+In this exercise, we will create OpenStack security groups labeled `infra-sg`
+from the undercloud system.
+We will be using the Ansible modules `os_security_group` and 
+`os_security_group_rule` to set our OpenStack security groups. The `infra-sg`
+security group will also have the ports 80 and 443 set. However, these variables
+need to be put in a list within a variable labeled _ports_ and the task of 
+enabling the ports should only be executed when the _ports_ variable has been
+defined.
+
+Create a playbook that uses the host undercloud and defines the ports variable
+with ports 80 and 443. 
+
+----
+- hosts: undercloud
+  vars: 
+    ports:
+      - 80
+      - 443
+----
+
+Create a task that creates the `infra-sg` security group.
+
+----
+  tasks:
+  - name: Create the infra-sg security group
+    os_security_group:
+      cloud: mycloud
+      state: present
+      name: infra-sg
+----
+
+Setup the ports for the `infra-sg` group using a loop that uses the list within
+the ports variable and only executes when this variable is defined.
+
+----
+  - name: Open the ports for the infra-sg group
+    os_security_group_rule:
+      cloud: mycloud
+      security_group: infra-sg
+      protocol: tcp
+      port_range_min: "{{ item }}"
+      port_range_max: "{{ item }}"
+    loop: "{{ ports }}"
+    when: ports is defined
+---- 
+
+Answer to exercise:
+
+
+----
+- hosts: undercloud
+  vars: 
+    ports:
+      - 80
+      - 443
+
+  tasks:
+  - name: Create the infra-sg security group
+    os_security_group:
+      cloud: mycloud
+      state: present
+      name: infra-sg
+
+  - name: Open the ports for the infra-sg group
+    os_security_group_rule:
+      cloud: mycloud
+      security_group: infra-sg
+      protocol: tcp
+      port_range_min: "{{ item }}"
+      port_range_max: "{{ item }}"
+    loop: "{{ ports }}"
+    when: ports is defined
+---- 
+
+//TODO: need to test if it works
+
+
+
