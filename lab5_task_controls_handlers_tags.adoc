@@ -1,4 +1,4 @@
-= Lab 5: Task Control, Handlers, Registered Variables, Tags
+= Lab 5: Task Control, Handlers, Registered Variables
 
 In lab five, we take a closer look at how to create conditionals and loops,
 how to implement handlers and tags all within an Ansible playbook.
