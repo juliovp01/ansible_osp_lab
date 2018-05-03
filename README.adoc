@@ -5,3 +5,4 @@
 === <<lab_overview.adoc#overview-of-the-lab,Lab Overview>>
 === <<lab1_ansible_install.adoc#lab-1-lab-setup, Lab 1 - Lab Setup>>
 === <<lab2_running_ansible.adoc#lab-2-configuring-and-running-ansible, Lab 2 - Configuring and Running Ansible>>
+=== <<lab3_intro_to_playbooks.adoc#lab-3-introduction-to-playbooks, Lab 3 - Introduction to Ansible Playbooks>>
