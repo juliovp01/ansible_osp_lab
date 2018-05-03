@@ -2,4 +2,5 @@
 
 :numbered!:
 
-=== <<lab_overview.adoc#overview-of-the-lab,Lab 0 - Lab Overview>>
+=== <<lab_overview.adoc#overview-of-the-lab,Lab Overview>>
+=== <<lab1_ansible_install.adoc#lab-1-lab-setup, Lab 1 - Lab Setup>>
