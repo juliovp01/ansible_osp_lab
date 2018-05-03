@@ -1,3 +1,4 @@
+toc::[]
 = Overview of the Lab
 
 == Abstract
