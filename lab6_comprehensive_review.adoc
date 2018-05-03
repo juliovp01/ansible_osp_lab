@@ -14,8 +14,11 @@ to accomplish the following tasks:
 
 NOTE: A public network has already been created for you. 
 
+____
+
 HINT: Register the value of the private subnet in order to pass the OpenStack
 subnet ID to the OpenStack router. 
+____
 
 When using any of the modules make sure to use the _mycloud_ as the value
 for the _cloud_ argument. The _mycloud_ is the name of the cloud with the
