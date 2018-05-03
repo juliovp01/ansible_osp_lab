@@ -1,8 +1,5 @@
-# ansible_osp_lab
-Lab to manage OpenStack with Ansible
-
 # OpenStack Summit 2018: Managing OpenStack with Ansible
 
 :numbered!:
 
-=== <<lab_overview.adoc,Lab 0 - Lab Overview>>
+=== <<lab_overview.adoc#overview-of-the-lab,Lab 0 - Lab Overview>>
