@@ -103,7 +103,7 @@ In order to verify access to your host, test the above inventory with the
 following Ansible command on your laptop/workstation:
 
 ----
-$ ansible all <ip-provided-by-instructor> --list-hosts
+$ ansible all -i ~/openstack-ansible/inventory --list-hosts
   hosts (1):
     <ip-provided-by-instructor>
 ----
