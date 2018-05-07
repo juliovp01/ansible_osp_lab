@@ -1,0 +1,122 @@
+= Lab 6: Comprehensive Review
+
+In lab six, we will apply everything we have learned and use the available
+http://docs.ansible.com/ansible/latest/modules/list_of_cloud_modules.html#openstack[Ansible OpenStack modules]
+to accomplish the following tasks:
+
+* Creation of a private network using `os_network` module
+* Creation of a private subnet to associate to the private network using the `os_subnet` module. Use CIDR 192.168.0.1/24
+* Creation of a router to associate with the private network using the `os_router` module
+* Create an OpenStack keypair using the public key on the localhost
+* Updating the default security group to allow `icmp` (ping) and `ssh` access via port 22.
+* Creation of an OpenStack instance using the `os_instance` module
+* Updating quotas to the OpenStack project `os_quota` 
+
+NOTE: A public network has already been created for you. 
+
+____
+
+HINT: Register the value of the private subnet in order to pass the OpenStack
+subnet ID to the OpenStack router. 
+____
+
+When using any of the modules make sure to use the _mycloud_ as the value
+for the _cloud_ argument. The _mycloud_ is the name of the cloud with the
+authentication credentials provided within the _cloud.yml_ file located in
+_/etc/openstack_.
+
+Assignment: Attempt to create a _playbook.yml_ file that accomplishes all the 
+task bullets. Ensure to take advantage of the Ansible documentation for clues
+on how to complete each task and also via command-line make use of the `ansible-doc`
+command for examples.
+
+Example of using `ansible-doc`:
+
+----
+$ ansible-doc os_network
+----
+
+The above command would provide documentation on how to use the OpenStack
+`os_network` module.
+
+
+Answer to the following exercise:
+
+----
+
+---
+- name: Lab 6 OpenStack Comprehensive Review
+  hosts: localhost
+
+  tasks:
+
+    - name: Create a private network named private_network using os_network
+      os_network:
+        cloud: mycloud
+        state: present
+        name: private_network
+
+    - name: Create a private subnet named private_subnet using os_subnet with CIDR 192.168.0.0/24
+      os_subnet:
+        cloud: mycloud
+        state: present
+        network_name: private_network
+        name: private_subnet
+        cidr: 192.168.0.1/24
+      register: subnet
+
+    - name: Create a router named router1.
+      os_router:
+        cloud: mycloud
+        state: present
+        name: router1
+
+    - name: Update the OpenStack router to associate the interfaces of router1 with the public network.
+      os_router:
+        cloud: mycloud
+        state: present
+        name: router1
+        interfaces: "{{ subnet.id }}"
+        network: public
+
+    - name: Update default security group to allow ICMP traffic
+      os_security_group_rule:
+        cloud: mycloud
+        state: present
+        security_group: default
+        protocol: icmp
+        remote_ip_prefix: 0.0.0.0/0
+
+    - name: Update default security group to allow SSH traffic
+      os_security_group_rule:
+        cloud: mycloud
+        state: present
+        security_group: default
+        protocol: tcp
+        port_range_min: 22
+        port_range_max: 22
+        remote_ip_prefix: 0.0.0.0/0
+
+
+     - name: Launch an OpenStack instance
+       os_server: 
+         cloud: mycloud
+         state: present
+         name: "{{ server_name }}"
+         flavor: "{{ flavor }}"
+         image: "{{ image }}"
+         key_name: "{{ key_name }}"
+         security_groups: default
+         network: private_network
+
+
+#TODO: CREATE QUOTA and KEYPAIR, ADD VARS Section.
+
+----
+
+//TODO: That update might not work because you gotta be overcloudrc, need to check manual commands to see what I did.
+//flavor, size, etc put in vars and give them the values. 
+//give them a name to the instance
+//create the keypair using local pub key.
+
+
