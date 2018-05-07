@@ -47,7 +47,12 @@ Answer to the following exercise:
 ---
 - name: Lab 6 OpenStack Comprehensive Review
   hosts: localhost
-
+  vars: 
+    flavor: m1.small
+    key_name: demokp
+    server_name: studentX
+    image: cirros
+    
   tasks:
 
     - name: Create a private network named private_network using os_network
@@ -97,6 +102,19 @@ Answer to the following exercise:
         port_range_max: 22
         remote_ip_prefix: 0.0.0.0/0
 
+     - name: Update project's quota
+       os_quota: 
+         cloud: mycloud
+         name: demo
+         cores: 4
+         instances: 2
+         
+     - name: Create an OSP Keypair using public key
+       os_keypair:
+         cloud: mycloud
+         state: present
+         name: "{{ key_name }}"
+         public_key_file: "{{ ansible_user_dir }}/.ssh/id_rsa.pub"
 
      - name: Launch an OpenStack instance
        os_server: 
