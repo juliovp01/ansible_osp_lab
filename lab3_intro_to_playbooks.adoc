@@ -137,31 +137,27 @@ First, create the initial portion of our playbook that defines the name, target,
 - name: Prepare for Lab
   hosts: localhost
   tasks:
-  - name: Install pip
-    yum:
-      name: python-pip
-      state: present 
+    - name: Install pip
+      yum:
+        name: python-pip
+        state: present 
 ----
 
 Next, create a task that installs the package shade needed for using Ansible OpenStack modules.
 
 [source,]
 ----
-- name: Prepare for Lab
-  hosts: localhost
-  
-  tasks:
-  - name: Installing Shade from Pypi
+    - name: Installing Shade from Pypi
       shell: pip install shade --upgrade
 ----
 
 Continue on by creating a tasks to download the latest version of CirrOS: 
 
 ----
-  - name: Downloading CirrOS
-    get_url:
-      url: http://download.cirros-cloud.net/0.4.0/cirros-0.4.0-x86_64-disk.img
-      dest: /tmp/cirros-latest.img
+    - name: Downloading CirrOS
+      get_url:
+        url: http://download.cirros-cloud.net/0.4.0/cirros-0.4.0-x86_64-disk.img
+        dest: /tmp/cirros-latest.img
 ----
 
 Everything together should look like the following (_prepare-for-lab.yml_):
@@ -172,19 +168,31 @@ Everything together should look like the following (_prepare-for-lab.yml_):
 - name: Prepare for Lab
   hosts: localhost
   tasks:
-  - name: Install pip
-    yum:
-      name: python-pip
-      state: present
+    - name: Install pip
+      yum:
+        name: python-pip
+        state: present
 
-  - name: Installing Shade from Pypi
+    - name: Installing Shade from Pypi
       shell: pip install shade --upgrade
-      
-  - name: Downloading CirrOS
-    get_url:
-      url: http://download.cirros-cloud.net/0.4.0/cirros-0.4.0-x86_64-disk.img
-      dest: /tmp/cirros-latest.img
+
+    - name: Downloading CirrOS
+      get_url:
+        url: http://download.cirros-cloud.net/0.4.0/cirros-0.4.0-x86_64-disk.img
+        dest: /tmp/cirros-latest.img
 ...
+----
+
+Verify the syntax of the playbook via:
+
+----
+$ ansible-playbook --syntax-check prepare-for-lab.yml
+----
+
+Test a dry run to ensure all looks correct:
+
+----
+$ ansible-playbook -c prepare-for-lab.yml
 ----
 
 Execute the playbook via the following command:
