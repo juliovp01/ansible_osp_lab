@@ -320,6 +320,9 @@ vagrant init fedora/27-cloud-base
 
 #Boot the Fedora 27 server using the following command:
 vagrant up --provider virtualbox
+
+#SSH into the vagrant box using the vagrant ssh command:
+vagrant ssh
 ----
 
 
