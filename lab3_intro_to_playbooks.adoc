@@ -112,11 +112,11 @@ may be elsewhere in the file depending on the exact syntax problem.
 
 === Dry runs
 
-Another best practice while executing playbooks is to perform a dry run. Dry runs are invoked with the `-c` option, which runs Ansible to report the changes that would have occurred if the playbook was executed, but without making actual changes to the managed hosts. 
+Another best practice while executing playbooks is to perform a dry run. Dry runs are invoked with the `-C` option, which runs Ansible to report the changes that would have occurred if the playbook was executed, but without making actual changes to the managed hosts. 
 
 [source,]
 ----
-$ ansible-playbook -c openstack-operator.yml 
+$ ansible-playbook -C openstack-operator.yml 
 ----
 
 == Guided Exercise: Writing a simple Ansible Playbook
@@ -124,62 +124,97 @@ $ ansible-playbook -c openstack-operator.yml
 
 At this point, we know how to write and execute basic playbooks. In this section, we will put everything together by using writing a playbook that will perform some basic tasks related to OpenStack. 
 
-To do that, let's create a file in your editor of choice, this file will be named: **prepare-for-lab.yml** that will be performing two specific tasks: 
+To do that, let's create a file in your editor of choice, this file will be named: **prepare-for-lab.yml** that will be performing a couple of tasks: 
 
-* Installing required packages to interact with OpenStack from Ansible: 
+* Register EPEL in order to install python2-pip (if using RHEL/CentOS)
+* Install pip and upgrade pip
+* Install packages gcc, python-devel, libselinux-python, python-openstackclient
+* Installing required packages to interact with OpenStack cloud modules from Ansible: 
     - shade - shade is a simple client library for interacting with OpenStack clouds. More details could be found https://pypi.org/project/shade/[Here].
-* Download the latest CirrOS image.
 
-First, create the initial portion of our playbook that defines the name, target, and the first task to install pip:
+///No need for this part of deployment * Download the latest CirrOS image.
+
+First, create the initial portion of our playbook that defines the name, target, and the first task to install EPEL repository, install pip and upgrade pip:
 
 [source,]
 ----
 - name: Prepare for Lab
   hosts: localhost
   tasks:
+    - name: Install EPEL Repository
+      package:
+        name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+        state: present
+      when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+    
     - name: Install pip
-      yum:
-        name: python-pip
-        state: present 
+      package:
+        name: python2-pip
+        state: present
+    
+    - name: Upgrade pip
+      shell: pip install --upgrade pip
 ----
 
-Next, create a task that installs the package shade needed for using Ansible OpenStack modules.
+Next, install the required packages such as gcc, python-devel, libselinux-python, and shade. 
 
 [source,]
 ----
+    - name: Install the required packages
+      package: 
+        name: "{{ item }}"
+        state: present
+      loop: 
+        - gcc
+        - python-devel
+        - libselinux-python
+        
     - name: Installing Shade from Pypi
       shell: pip install shade --upgrade
 ----
+Lastly, install the python-openstackclient
 
-Continue on by creating a tasks to download the latest version of CirrOS: 
-
+[source,]
 ----
-    - name: Downloading CirrOS
-      get_url:
-        url: http://download.cirros-cloud.net/0.4.0/cirros-0.4.0-x86_64-disk.img
-        dest: /tmp/cirros-latest.img
+    - name: Install python-openstackclient
+      shell: pip install python-openstackclient --upgrade
 ----
-
 Everything together should look like the following (_prepare-for-lab.yml_):
 
 [source,]
 ----
 ---
-- name: Prepare for Lab
-  hosts: localhost
-  tasks:
-    - name: Install pip
-      yum:
-        name: python-pip
-        state: present
+ - name: Prepare for Lab
+   hosts: localhost
+   tasks:
+     - name: Install EPEL Repository
+       package:
+         name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+         state: present
+       when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+    
+     - name: Install pip
+       package:
+         name: python2-pip
+         state: present
+    
+     - name: Upgrade pip
+       shell: pip install --upgrade pip
 
-    - name: Installing Shade from Pypi
-      shell: pip install shade --upgrade
-
-    - name: Downloading CirrOS
-      get_url:
-        url: http://download.cirros-cloud.net/0.4.0/cirros-0.4.0-x86_64-disk.img
-        dest: /tmp/cirros-latest.img
+     - name: Install the required packages
+       package: 
+         name: "{{ item }}"
+         state: present
+       loop: 
+         - gcc
+         - python-devel
+         - libselinux-python
+        
+     - name: Installing Shade from Pypi
+       shell: pip install shade --upgrade
+       
+     - name: Install python-openstackclient
+       shell: pip install python-openstackclient --upgrade
 ...
 ----
 
@@ -187,12 +222,6 @@ Verify the syntax of the playbook via:
 
 ----
 $ ansible-playbook --syntax-check prepare-for-lab.yml
-----
-
-Test a dry run to ensure all looks correct:
-
-----
-$ ansible-playbook -c prepare-for-lab.yml
 ----
 
 Execute the playbook via the following command:
@@ -205,14 +234,13 @@ Verification that `shade` was installed can be done via an ad-hoc command as
 follows:
 
 ----
-$ ansible all -m command -a "pip list"
+$ ansible localhost -m command -a "pip list"
 ----
 
-The above command will provide all the python modules currently installed. 
-
-Once `shade` install has been verified, the downloading of the CirrOS can be done
-via the ad-hoc command:
+Verification that `python-openstackclient` was installed can be done via an ad-hoc command as follows:
 
 ----
-$ ansible all -m command -a "ls /tmp/"
+$ ansible localhost -m command -a "rpm -q python-openstackclient"
 ----
+
+The above command will show if the package is currently installed. 
