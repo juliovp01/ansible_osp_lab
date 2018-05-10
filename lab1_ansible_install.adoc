@@ -298,7 +298,29 @@ Below is a table with the specifics regarding the VirtualBox image.
 | http://people.redhat.com/juvillar/ova/ansible-mgmt.ova | `ansible` | `ansible`
 |====
 
+== Installing Ansible using Vagrant
 
+If interested in running a Fedora workstation using Vagrant, the following steps provide the setup.
+
+The steps below are done on a Fedora machine.
+
+----
+# Install Vagrant
+dnf install -y vagrant
+
+# Install VirtualBox
+dnf install -y VirtualBox
+
+# Create a folder on your system that will store the Vagrantfile to run your VM.
+mkdir ~/openstack-vagrant
+cd ~/openstack-vagrant
+
+# Initialize the 'box' which creates the Vagrantfile. We will be creating a Fedora 27 box.
+vagrant init fedora/27-cloud-base
+
+#Boot the Fedora 27 server using the following command:
+vagrant up --provider virtualbox
+----
 
 
 
