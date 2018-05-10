@@ -128,10 +128,10 @@ following TCP ports on the `master-sg` group: 22, 80, and 443. Within the `app-s
 only open the TCP ports 80 and 443. The goal of this exercise is to use loops were
 appopriate.
 
-Using the undercloud host, setup the first lines of the playbook.
+Using the localhost host, setup the first lines of the playbook.
 
 ----
-- hosts: undercloud
+- hosts: localhost
   tasks:
 ----
 
@@ -140,74 +140,74 @@ Create two security groups labeled `master-sg` and `app-sg` using the
 `os_security_group` module and use a loop.
 
 ----
-  - name: Create the master-sg and app-sg security groups
-    os_security_group:
-      cloud: mycloud
-      state: present
-      name: "{{ item }}"
-    loop:
-      - master-sg
-      - app-sg
+    - name: Create the master-sg and app-sg security groups
+      os_security_group:
+        cloud: mycloud
+        state: present
+        name: "{{ item }}"
+      loop:
+        - master-sg
+        - app-sg
 ----
 
 Create a task that uses a nested loop and enables the common ports 80 and 43
 for each of the security groups. 
 
 ----
-  - name: Open the following common ports for the master-sg and app-sg group
-    os_security_group_rule:
-      cloud: mycloud
-      security_group: "{{ item[0] }}"
-      protocol: tcp
-      port_range_min: "{{ item[1] }}"
-      port_range_max: "{{ item[1] }}"
-    loop: "{{ query('nested', [ 'master-sg', 'app-sg' ], [ '80', '443' ]) }}"
+    - name: Open the following common ports for the master-sg and app-sg group
+      os_security_group_rule:
+        cloud: mycloud
+        security_group: "{{ item[0] }}"
+        protocol: tcp
+        port_range_min: "{{ item[1] }}"
+        port_range_max: "{{ item[1] }}"
+      loop: "{{ query('nested', [ 'master-sg', 'app-sg' ], [ '80', '443' ]) }}"
 ----
 
 Finally, create the final task that enables port 22 on the `master-sg` security
 group.
 
 ----
-  - name: Open the ssh port for the master-sg 
-    os_security_group_rule:
-      cloud: mycloud
-      security_group: master-sg
-      protocol: tcp
-      port_range_min: 22
-      port_range_max: 22
+    - name: Open the ssh port for the master-sg 
+      os_security_group_rule:
+        cloud: mycloud
+        security_group: master-sg
+        protocol: tcp
+        port_range_min: 22
+        port_range_max: 22
 ----
 
 The below is one answer to the above exercise.
 
 ----
-- hosts: undercloud
+- hosts: localhost
   tasks:
 
-  - name: Create the master-sg and app-sg security groups
-    os_security_group:
-      cloud: mycloud
-      state: present
-      name: "{{ item }}"
-    loop:
-      - master-sg
-      - app-sg
+    - name: Create the master-sg and app-sg security groups
+      os_security_group:
+        cloud: mycloud
+        state: present
+        name: "{{ item }}"
+      loop:
+        - master-sg
+        - app-sg
 
-  - name: Open the following common ports for the master-sg and app-sg group
-    os_security_group_rule:
-      cloud: mycloud
-      security_group: "{{ item[0] }}"
-      protocol: tcp
-      port_range_min: "{{ item[1] }}"
-      port_range_max: "{{ item[1] }}"
-    loop: "{{ query('nested', [ 'master-sg', 'app-sg' ], [ '80', '443' ]) }}"
+    - name: Open the following common ports for the master-sg and app-sg group
+      os_security_group_rule:
+        cloud: mycloud
+        security_group: "{{ item[0] }}"
+        protocol: tcp
+        port_range_min: "{{ item[1] }}"
+        port_range_max: "{{ item[1] }}"
+      loop: "{{ query('nested', [ 'master-sg', 'app-sg' ], [ '80', '443' ]) }}"
 
-  - name: Open the ssh port for the master-sg 
-    os_security_group_rule:
-      cloud: mycloud
-      security_group: master-sg
-      protocol: tcp
-      port_range_min: 22
-      port_range_max: 22
+    - name: Open the ssh port for the master-sg 
+      os_security_group_rule:
+        cloud: mycloud
+        security_group: master-sg
+        protocol: tcp
+        port_range_min: 22
+        port_range_max: 22
 ----
 
 NOTE: The argument cloud and value _mycloud_ comes from a _clouds.yml_ file
@@ -255,18 +255,19 @@ and requiring the `http` service to be restarted after the task is complete.
 ----
 
   tasks:
-  - name: Copying a example.conf file
-    copy:
-      src: /local/path/to/example.conf
-      dest: /remote/path/to/example.conf
-    notify:
-      - restart_apache
+  
+    - name: Copying a example.conf file
+      copy:
+        src: /local/path/to/example.conf
+        dest: /remote/path/to/example.conf
+      notify:
+        - restart_apache
 
   handlers:
-  - name: restart_apache
-    service:
-      name: httpd
-      state: restarted
+    - name: restart_apache
+      service:
+        name: httpd
+        state: restarted
 ----
 
 The above example goes through all the tasks (in this case, we just have one
@@ -286,13 +287,13 @@ An example from the Ansible 2.5, documentation is shown below.
 ----
    tasks:
 
-   - name: Run a script named foo
-     shell: /usr/bin/foo
-     register: foo_result
+     - name: Run a script named foo
+       shell: /usr/bin/foo
+       register: foo_result
 
-   - name: Run a script named bar
-     shell: /usr/bin/bar
-     when: foo_result.rc == 5
+     - name: Run a script named bar
+       shell: /usr/bin/bar
+       when: foo_result.rc == 5
 ----
 
 The first task runs  a script named foo and captures the result of foo and 
@@ -307,13 +308,13 @@ An example is shown below.
 ----
    tasks:
 
-   - name: Run a script named foo
-     shell: /usr/bin/foo
-     register: foo_result
+     - name: Run a script named foo
+       shell: /usr/bin/foo
+       register: foo_result
 
-   - name: debugging the variable foo_result
-     debug:
-       var: foo_result
+     - name: debugging the variable foo_result
+       debug:
+         var: foo_result
 ----
 
 
@@ -343,7 +344,7 @@ Create a playbook that uses the host undercloud and defines the ports variable
 with ports 80 and 443. 
 
 ----
-- hosts: undercloud
+- hosts: localhost
   vars: 
     ports:
       - 80
@@ -354,54 +355,54 @@ Create a task that creates the `infra-sg` security group.
 
 ----
   tasks:
-  - name: Create the infra-sg security group
-    os_security_group:
-      cloud: mycloud
-      state: present
-      name: infra-sg
+    - name: Create the infra-sg security group
+      os_security_group:
+        cloud: mycloud
+        state: present
+        name: infra-sg
 ----
 
 Setup the ports for the `infra-sg` group using a loop that uses the list within
 the ports variable and only executes when this variable is defined.
 
 ----
-  - name: Open the ports for the infra-sg group
-    os_security_group_rule:
-      cloud: mycloud
-      security_group: infra-sg
-      protocol: tcp
-      port_range_min: "{{ item }}"
-      port_range_max: "{{ item }}"
-    loop: "{{ ports }}"
-    when: ports is defined
+    - name: Open the ports for the infra-sg group
+      os_security_group_rule:
+        cloud: mycloud
+        security_group: infra-sg
+        protocol: tcp
+        port_range_min: "{{ item }}"
+        port_range_max: "{{ item }}"
+      loop: "{{ ports }}"
+      when: ports is defined
 ---- 
 
 Answer to exercise:
 
 
 ----
-- hosts: undercloud
+- hosts: localhost
   vars: 
     ports:
       - 80
       - 443
 
   tasks:
-  - name: Create the infra-sg security group
-    os_security_group:
-      cloud: mycloud
-      state: present
-      name: infra-sg
+    - name: Create the infra-sg security group
+      os_security_group:
+        cloud: mycloud
+        state: present
+        name: infra-sg
 
-  - name: Open the ports for the infra-sg group
-    os_security_group_rule:
-      cloud: mycloud
-      security_group: infra-sg
-      protocol: tcp
-      port_range_min: "{{ item }}"
-      port_range_max: "{{ item }}"
-    loop: "{{ ports }}"
-    when: ports is defined
+    - name: Open the ports for the infra-sg group
+      os_security_group_rule:
+        cloud: mycloud
+        security_group: infra-sg
+        protocol: tcp
+        port_range_min: "{{ item }}"
+        port_range_max: "{{ item }}"
+      loop: "{{ ports }}"
+      when: ports is defined
 ---- 
 
 //TODO: need to test if it works
