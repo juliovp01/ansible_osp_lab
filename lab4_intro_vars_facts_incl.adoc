@@ -140,11 +140,11 @@ Here is an example playbook that shows the running kernel and hostname of a syst
 ---
 - hosts: all
   tasks:
-  - name: Prints various Ansible facts
-    debug: 
-      msg: >
-        The running Kernel of {{ ansible_hostname }}
-        is {{ ansible_kernel }}
+    - name: Prints various Ansible facts
+      debug: 
+        msg: >
+          The running Kernel of {{ ansible_hostname }}
+          is {{ ansible_kernel }}
 ----
 
 In order to see how the Setup module works, please check: http://docs.ansible.com/ansible/latest/modules/setup_module.html 
@@ -160,7 +160,7 @@ A best practice when writing complex or lengthy playbooks is to use separate fil
 [source,]
 ----
  tasks:
-  - name: Include tasks to manage Images on OpenStack
+   - name: Include tasks to manage Images on OpenStack
     include: tasks/os_image.yml
 ----
 
