@@ -79,9 +79,3 @@ provided by the instructor during the lab.
 
 The student's public SSH key i.e. `id_rsa.pub` on their workstation will be 
 required in order to SSH into the instance. 
-
-//TODO: Julio, how can we better manage this portion? Provide a private key 
-//instead?  Not sure of the options in OVH. <-- TO REVIEW BY ME
-
-
-
