@@ -127,14 +127,5 @@ Answer to the following exercise:
          security_groups: default
          network: private_network
 
-
-#TODO: CREATE QUOTA and KEYPAIR, ADD VARS Section.
-
+...
 ----
-
-//TODO: That update might not work because you gotta be overcloudrc, need to check manual commands to see what I did.
-//flavor, size, etc put in vars and give them the values. 
-//give them a name to the instance
-//create the keypair using local pub key.
-
-
