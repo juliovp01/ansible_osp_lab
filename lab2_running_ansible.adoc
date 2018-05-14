@@ -113,6 +113,34 @@ all the managed nodes. If the inventory file had host groups that we wanted to
 check against, we would replace _all_ with the name of the host group in the
 example above.
 
+== YAML Configuration File
+
+In order to use the OpenStack cloud modules from Ansible, a special YAML file
+is required within the _/etc/openstack/clouds.yml_. This file includes all the
+information provided within your _keystonerc_demo_ file that was created once
+the packstack installation completed. An example of the file is shown below:
+
+----
+clouds:
+  mycloud:
+    auth:
+      auth_url: http://10.19.114.177:5000
+      username: testdemo
+      password: testdemo
+      project_name: testdemo-tenant
+    region_name: regionOne
+  admin:
+    auth:
+      auth_url: http://10.19.114.177:5000
+      username: admin
+      password: YZagwYUFPMpm9pxWe9sWYvNJn
+      project_name: admin
+    region_name: regionOne
+ansible:
+  use_hostnames: True
+  expand_hostvars: False
+----
+
 == Ansible Configuration File
 
 The Ansible configuration file consists of multiple sections that are defined
