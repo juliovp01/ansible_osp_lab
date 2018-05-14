@@ -141,8 +141,6 @@ https://git-scm.com/download/mac[here].
 ////
 === Installing text editor (Sublime Text) on macOS
 
-//TODO: Do we really want to recommend a text editor?
-
 In this lab, we will use a Sublime Text to write the ansible playbooks. To install Sublime Text download the latest version at: https://www.sublimetext.com/3 . 
 ////
 
@@ -174,11 +172,7 @@ The following list of packages are required during the Cygwin installation:
 After this install `PyYAML` and `Jinja2` separately, as they are not 
 available in Cygwin.
 
-//TODO: Where do I get the above packages?
-
 Once installed, open Cygwin to complete the installation of Ansible.
-
-//TODO: What is the SSH key needed here for? 
 
 .Generate a SSH key
 ----
@@ -281,7 +275,6 @@ In Linux we will use vi/vim/nano to edit and manipulate files.
 [[vbsetup]]
 == VirtualBox Setup (Pre-Installed Image)
 
-//TODO: Maybe we add steps for how to do the install of VBox for Fedora system?
 
 If installing Ansible and/or `git` on your laptop/workstation is not your
 preferred method, a VirtualBox image is provided that may be used as your
