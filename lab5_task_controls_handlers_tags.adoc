@@ -214,28 +214,6 @@ NOTE: The argument cloud and value _mycloud_ comes from a _clouds.yml_ file
 within the _/etc/openstack_ directory. This _clouds.yml_ file was provided in
 the beginning of this course.
 
-//TODO: We need to get an example of the clouds.yml in earlier section
-////
-clouds:
-  mycloud:
-    auth:
-      auth_url: http://10.19.114.177:5000
-      username: testdemo
-      password: testdemo
-      project_name: testdemo-tenant
-    region_name: regionOne
-  admin:
-    auth:
-      auth_url: http://10.19.114.177:5000
-      username: admin
-      password: YZagwYUFPMpm9pyWe9sWYvNJn
-      project_name: admin
-    region_name: regionOne
-ansible:
-  use_hostnames: True
-  expand_hostvars: False
-////
-
 == Handlers
 
 Handlers are a special task that are inactive unless triggered by calling
