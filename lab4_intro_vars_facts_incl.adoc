@@ -30,7 +30,7 @@ You could define variables in multiple ways for the execution, and there are thr
 * Play scope: Play scope variables are set in the play and related structures
 * Host scope: Host scope variables are set on host groups and individual hosts by the inventory, fact gathering, or registered tasks
    
-There is something fundamental to know when defining variables if the same variable name is set at more than one level, the higher wins. Here is an example: if the variable openstack_api_url is defined by the inventory, could be overridden if the same variable is defined at the playbook, and that could be overridden if defined on the command line.
+There is something fundamental to know when defining variables: if the same variable name is set at more than one level, the higher wins. Here is an example: if the variable openstack_api_url is defined by the inventory, could be overridden if the same variable is defined at the playbook, and that could be overridden if defined on the command line.
 
 
 
