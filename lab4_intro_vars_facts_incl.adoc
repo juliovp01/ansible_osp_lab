@@ -119,6 +119,39 @@ ansible_user=ansible_i2
 
 For more detail on host and group variables, please visit: http://docs.ansible.com/ansible/latest/user_guide/intro_inventory.html#host-variables[here] . 
 
+=== Facts
+
+Facts in Ansible are variables that are automatically discovered. Facts contain host-specific information that can be used just like regular variables.
+
+Some of the facts gathered for a managed host might include: 
+
+* Host name
+* Kernel version
+* IP addresses
+* OS version 
+* and more... 
+
+Every play runs the setup module automatically before the first task to gather facts from the managed node. You don't need to have a task to run setup in your play; it is automatically run for you by Ansible.
+
+Here is an example playbook that shows the running kernel and hostname of a system: 
+
+[source,]
+----
+---
+- hosts: all
+  tasks:
+  - name: Prints various Ansible facts
+    debug: 
+      msg: >
+        The running Kernel of {{ ansible_hostname }}
+        is {{ ansible_kernel }}
+----
+
+In order to see how the Setup module works, please check: http://docs.ansible.com/ansible/latest/modules/setup_module.html 
+
+For more details about facts: http://docs.ansible.com/ansible/latest/user_guide/playbooks_variables.html#information-discovered-from-systems-facts 
+
+=== Includes
 
 
 
