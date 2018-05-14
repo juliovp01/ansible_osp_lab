@@ -383,7 +383,5 @@ Answer to exercise:
       when: ports is defined
 ---- 
 
-//TODO: need to test if it works
-
 
 
