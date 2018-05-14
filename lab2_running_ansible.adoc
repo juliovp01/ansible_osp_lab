@@ -117,17 +117,20 @@ example above.
 
 In order to use the OpenStack cloud modules from Ansible, a special YAML file
 is required within the _/etc/openstack/clouds.yml_. This file includes all the
-information provided within your _keystonerc_demo_ file that was created once
-the packstack installation completed. An example of the file is shown below:
+information provided within your _keystonerc_demo_ and _keystonerc_admin_ files that 
+were created once the packstack installation completed. An example of the file 
+is shown below. Notice how there are two clouds which represent two different
+types of access. _mycloud_ represents our demo environment and _admin_ represents our
+administrative cloud access. 
 
 ----
 clouds:
   mycloud:
     auth:
       auth_url: http://10.19.114.177:5000
-      username: testdemo
-      password: testdemo
-      project_name: testdemo-tenant
+      username: demo
+      password: demo
+      project_name: demo-tenant
     region_name: regionOne
   admin:
     auth:
