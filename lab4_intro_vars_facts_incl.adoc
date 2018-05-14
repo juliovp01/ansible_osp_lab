@@ -32,6 +32,99 @@ You could define variables in multiple ways for the execution, and there are thr
    
 There is something fundamental to know when defining variables: if the same variable name is set at more than one level, the higher wins. Here is an example: if the variable openstack_api_url is defined by the inventory, could be overridden if the same variable is defined at the playbook, and that could be overridden if defined on the command line.
 
+==== Variables in Playbooks
+
+You could define variables in Playbooks, for example, a variable *glance_image_name* can be defined with a value of **CirrOS.img**. This could be defined in multiple ways, as exemplified below: 
+
+* In vars block at the beginning of Playbook:
+
+[source,]
+----
+- hosts: localhost
+  vars: 
+    glance_image_name: CirrOS.img
+    openstack_api_url: https://api.magicasaservice.com:8773
+----
+
+* In an external variable file:
+
+[source,]
+----
+- hosts: localhost
+  vars_files: 
+    - vars/os_vars.yml
+----
+
+Inside the variable file, variables are defined in YAML format: 
+
+[source,]
+----
+glance_image_name: CirrOS.img
+openstack_api_url: https://api.magicasaservice.com
+----
+
+Now, to use the variable, you need to reference it inside double curly braces {{ }}. Ansible will substitute the variable with its value when the task is executed:
+
+[source,]
+----
+- hosts: localhost
+  vars: 
+    glance_image_name: CirrOS.img
+    openstack_api_url: https://api.magicasaservice.com:8773
+    
+  tasks:
+    - name: Upload Glance Image
+      os_image:
+        auth: "{{ openstack_api_url }}"
+        username: admin
+        password: ansible
+        project_name: admin
+      name: CirrOS
+      container_format: bare
+      disk_format: qcow2
+      state: present
+      filename: "{{ glance_image_name }}"
+      kernel: cirros-vmlinuz
+      ramdisk: cirros-initrd
+      properties:
+        cpu_arch: x86_64
+        ditro: ubuntu
+----
+
+In the previous example, we are using the variables declared for the openstack_api_url and glance_image_name. Also, notice the quotes, we are using them because we are declaring variables as the first element starting the value.
+
+==== Host Variables and Group Variables
+
+There is another type of variable in Ansible that is applied at the inventory level. They can be __host variables__, that apply to specific hosts and __group variables__, that use all hosts under a group.
+
+* Here is an example for a host variable:
+
+[source,]
+----
+[servers]
+ansible1.magicasaservice.com ansible_user=ansible_i2
+----
+
+* Here is an example for a group variable:
+
+[source,]
+----
+[servers]
+ansible1.magicasaservice.com
+ansible2.magicasaservice.com
+
+[servers:vars]
+ansible_user=ansible_i2
+----
+
+For more detail on host and group variables, please visit: http://docs.ansible.com/ansible/latest/user_guide/intro_inventory.html#host-variables[here] . 
+
+
+
+
+
+
+
 
 
 
