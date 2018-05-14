@@ -1,4 +1,4 @@
-= Lab 3: Introduction to Variables, Facts, and Includes
+= Lab 4: Introduction to Variables, Facts, and Includes
 
 In this lab we will continue our journey with Ansible by learning about variables, facts, and includes.
 
