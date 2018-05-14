@@ -4,9 +4,9 @@ In this lab we will continue our journey with Ansible by learning about variable
 
 == Variables in Ansible
 
-There are multiple ways that variables can be utilized in Ansible to store values that can be reused in order to simplify the creation and maintenance of a project while reducing errors.
+There are multiple ways that variables can be utilized in Ansible to store values that can be reused to simplify the creation and maintenance of a project while reducing errors.
 
-Using variables provide a convenient way to manage dynamic values for a given environment in your Ansible project. Some examples of values that variables might contain include: 
+Using variables provide a convenient way to manage dynamic values for a given environment in your Ansible project. Some examples of values that variables might contain include:
 
 * credentials (user and passwords) 
 * file names
@@ -15,12 +15,23 @@ Using variables provide a convenient way to manage dynamic values for a given en
 
 === Naming variables
 
-Variables should have names which consist of a string that must start with a letter and can only contain letters, numbers, and underscores. Here are a list of variables named using the right nomenclature: 
+Variables should have names which consist of a string that must start with a letter and can only contain letters, numbers, and underscores. Here is a list of variables named using the correct terminology:
 
 * user_name
 * file_1
 * file_2
 * openstack_api_url
+
+=== Defining variables
+
+You could define variables in multiple ways for the execution, and there are three scope levels where a variable could be defined:
+
+* Global scope: Global scope variables are set from the command line or in the Ansible configuration file
+* Play scope: Play scope variables are set in the play and related structures
+* Host scope: Host scope variables are set on host groups and individual hosts by the inventory, fact gathering, or registered tasks
+   
+There is something fundamental to know when defining variables if the same variable name is set at more than one level, the higher wins. Here is an example: if the variable openstack_api_url is defined by the inventory, could be overridden if the same variable is defined at the playbook, and that could be overridden if defined on the command line.
+
 
 
 
