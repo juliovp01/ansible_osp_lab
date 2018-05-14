@@ -1,4 +1,29 @@
 = Lab 3: Introduction to Variables, Facts, and Includes
 
-In this lab we will continue learning about Ansible. We will talk about variables, facts and includes, all important components in writing Ansible automation. 
+In this lab we will continue our journey with Ansible by learning about variables, facts, and includes.
+
+== Variables in Ansible
+
+There are multiple ways that variables can be utilized in Ansible to store values that can be reused in order to simplify the creation and maintenance of a project while reducing errors.
+
+Using variables provide a convenient way to manage dynamic values for a given environment in your Ansible project. Some examples of values that variables might contain include: 
+
+* credentials (user and passwords) 
+* file names
+* file paths
+* urls
+
+=== Naming variables
+
+Variables should have names which consist of a string that must start with a letter and can only contain letters, numbers, and underscores. Here are a list of variables named using the right nomenclature: 
+
+* user_name
+* file_1
+* file_2
+* openstack_api_url
+
+
+
+
+
 
