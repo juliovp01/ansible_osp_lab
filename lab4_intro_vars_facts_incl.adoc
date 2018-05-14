@@ -153,6 +153,27 @@ For more details about facts: http://docs.ansible.com/ansible/latest/user_guide/
 
 === Includes
 
+A best practice when writing complex or lengthy playbooks is to use separate files to divide tasks and lists of variables for more natural management. There are multiple ways to include task files and variables in a playbook.
+
+* Tasks can be included in a playbook from an external file:
+
+[source,]
+----
+ tasks:
+  - name: Include tasks to manage Images on OpenStack
+    include: tasks/os_image.yml
+----
+
+also, you could use the _include_vars_ as previously show to include variables from JSON or YAML files: 
+[source,]
+----
+- hosts: localhost
+  vars_files: 
+    - vars/os_vars.yml
+----
+
+Using multiple, external files for tasks and variables is a convenient way to build the main playbook in a modular way. You could use the *include* directive to have a task file inserted at a particular point in a playbook.
+
 
 
 
