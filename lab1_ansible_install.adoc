@@ -295,7 +295,7 @@ Below is a table with the specifics regarding the VirtualBox image.
 
 |====
 | *VirtualBox Image Location* | *username* | *password*
-| http://people.redhat.com/juvillar/ova/ansible-mgmt.ova | `ansible` | `ansible`
+| https://s3.amazonaws.com/ansible-mgmt/ansible-mgmt.ova | `ansible` | `ansible`
 |====
 
 == Installing Ansible using Vagrant
