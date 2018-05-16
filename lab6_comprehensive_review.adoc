@@ -102,30 +102,30 @@ Answer to the following exercise:
         port_range_max: 22
         remote_ip_prefix: 0.0.0.0/0
 
-     - name: Update project's quota
-       os_quota: 
-         cloud: mycloud
-         name: demo
-         cores: 4
-         instances: 2
+    - name: Update project's quota
+      os_quota: 
+        cloud: mycloud
+        name: demo
+        cores: 4
+        instances: 2
          
-     - name: Create an OSP Keypair using public key
-       os_keypair:
-         cloud: mycloud
-         state: present
-         name: "{{ key_name }}"
-         public_key_file: "{{ ansible_user_dir }}/.ssh/id_rsa.pub"
+    - name: Create an OSP Keypair using public key
+      os_keypair:
+        cloud: mycloud
+        state: present
+        name: "{{ key_name }}"
+        public_key_file: "{{ ansible_user_dir }}/.ssh/id_rsa.pub"
 
-     - name: Launch an OpenStack instance
-       os_server: 
-         cloud: mycloud
-         state: present
-         name: "{{ server_name }}"
-         flavor: "{{ flavor }}"
-         image: "{{ image }}"
-         key_name: "{{ key_name }}"
-         security_groups: default
-         network: private_network
+    - name: Launch an OpenStack instance
+      os_server: 
+        cloud: mycloud
+        state: present
+        name: "{{ server_name }}"
+        flavor: "{{ flavor }}"
+        image: "{{ image }}"
+        key_name: "{{ key_name }}"
+        security_groups: default
+        network: private_network
 
 ...
 ----
