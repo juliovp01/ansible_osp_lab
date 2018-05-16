@@ -75,16 +75,7 @@ Answer to the following exercise:
         cloud: mycloud
         state: present
         name: studentX_router1
-
-////
-    - name: Update the OpenStack router to associate the interfaces of router1 with the public network.
-      os_router:
-        cloud: mycloud
-        state: present
-        name: router1
-        interfaces: "{{ subnet.id }}"
-        network: public
-////
+        
     - name: Update default security group to allow ICMP traffic
       os_security_group_rule:
         cloud: mycloud
@@ -130,3 +121,15 @@ Answer to the following exercise:
 
 ...
 ----
+
+////
+Keeping this code here, but we removed updating the os_router because we didn't want it to conflict with packstack install
+
+    - name: Update the OpenStack router to associate the interfaces of router1 with the public network.
+      os_router:
+        cloud: mycloud
+        state: present
+        name: router1
+        interfaces: "{{ subnet.id }}"
+        network: public
+////
