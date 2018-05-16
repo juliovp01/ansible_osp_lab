@@ -55,27 +55,28 @@ Answer to the following exercise:
     
   tasks:
 
-    - name: Create a private network named private_network using os_network
+    - name: Create a private network named studentX_private_network using os_network
       os_network:
         cloud: mycloud
         state: present
-        name: private_network
+        name: studentX_private_network
 
-    - name: Create a private subnet named private_subnet using os_subnet with CIDR 192.168.0.0/24
+    - name: Create a private subnet named studentX_private_subnet using os_subnet with CIDR 192.168.0.0/24
       os_subnet:
         cloud: mycloud
         state: present
-        network_name: private_network
-        name: private_subnet
+        network_name: studentX_private_network
+        name: studentX_private_subnet
         cidr: 192.168.0.1/24
       register: subnet
 
-    - name: Create a router named router1.
+    - name: Create a router named studentX_router1.
       os_router:
         cloud: mycloud
         state: present
-        name: router1
+        name: studentX_router1
 
+////
     - name: Update the OpenStack router to associate the interfaces of router1 with the public network.
       os_router:
         cloud: mycloud
@@ -83,7 +84,7 @@ Answer to the following exercise:
         name: router1
         interfaces: "{{ subnet.id }}"
         network: public
-
+////
     - name: Update default security group to allow ICMP traffic
       os_security_group_rule:
         cloud: mycloud
@@ -104,7 +105,7 @@ Answer to the following exercise:
 
     - name: Update project's quota
       os_quota: 
-        cloud: mycloud
+        cloud: admin
         name: demo
         cores: 4
         instances: 2
