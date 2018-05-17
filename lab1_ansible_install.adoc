@@ -280,7 +280,7 @@ If installing Ansible and/or `git` on your laptop/workstation is not your
 preferred method, a VirtualBox image is provided that may be used as your
 workstation to complete the corresponding labs. 
 
-Prior to using the provided http://people.redhat.com/juvillar/ova/ansible-mgmt.ova[Fedora VirtualBox Image],
+Prior to using the provided https://s3.amazonaws.com/ansible-mgmt/ansible-mgmt.ova[Fedora VirtualBox Image],
 download and install VirtualBox for your corresponding Operating System. Visit 
 https://www.virtualbox.org/wiki/Downloads to complete the installation.
 
