@@ -525,34 +525,26 @@ command for examples.</p>
 
   tasks:
 
-    - name: Create a private network named private_network using os_network
+    - name: Create a private network named studentX_private_network using os_network
       os_network:
         cloud: mycloud
         state: present
-        name: private_network
+        name: studentX_private_network
 
-    - name: Create a private subnet named private_subnet using os_subnet with CIDR 192.168.0.0/24
+    - name: Create a private subnet named studentX_private_subnet using os_subnet with CIDR 192.168.0.0/24
       os_subnet:
         cloud: mycloud
         state: present
-        network_name: private_network
-        name: private_subnet
+        network_name: studentX_private_network
+        name: studentX_private_subnet
         cidr: 192.168.0.1/24
       register: subnet
 
-    - name: Create a router named router1.
+    - name: Create a router named studentX_router1.
       os_router:
         cloud: mycloud
         state: present
-        name: router1
-
-    - name: Update the OpenStack router to associate the interfaces of router1 with the public network.
-      os_router:
-        cloud: mycloud
-        state: present
-        name: router1
-        interfaces: "{{ subnet.id }}"
-        network: public
+        name: studentX_router1
 
     - name: Update default security group to allow ICMP traffic
       os_security_group_rule:
@@ -572,30 +564,30 @@ command for examples.</p>
         port_range_max: 22
         remote_ip_prefix: 0.0.0.0/0
 
-     - name: Update project's quota
-       os_quota:
-         cloud: mycloud
-         name: demo
-         cores: 4
-         instances: 2
+    - name: Update project's quota
+      os_quota:
+        cloud: admin
+        name: demo
+        cores: 4
+        instances: 2
 
-     - name: Create an OSP Keypair using public key
-       os_keypair:
-         cloud: mycloud
-         state: present
-         name: "{{ key_name }}"
-         public_key_file: "{{ ansible_user_dir }}/.ssh/id_rsa.pub"
+    - name: Create an OSP Keypair using public key
+      os_keypair:
+        cloud: mycloud
+        state: present
+        name: "{{ key_name }}"
+        public_key_file: "{{ ansible_user_dir }}/.ssh/id_rsa.pub"
 
-     - name: Launch an OpenStack instance
-       os_server:
-         cloud: mycloud
-         state: present
-         name: "{{ server_name }}"
-         flavor: "{{ flavor }}"
-         image: "{{ image }}"
-         key_name: "{{ key_name }}"
-         security_groups: default
-         network: private_network
+    - name: Launch an OpenStack instance
+      os_server:
+        cloud: mycloud
+        state: present
+        name: "{{ server_name }}"
+        flavor: "{{ flavor }}"
+        image: "{{ image }}"
+        key_name: "{{ key_name }}"
+        security_groups: default
+        network: private_network
 
 ...</pre>
 </div>
@@ -603,7 +595,7 @@ command for examples.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2018-05-14 16:26:39 CDT
+Last updated 2018-05-16 13:28:19 CDT
 </div>
 </div>
 </body>
