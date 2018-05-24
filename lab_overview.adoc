@@ -79,3 +79,5 @@ provided by the instructor during the lab.
 
 The student's public SSH key i.e. `id_rsa.pub` on their workstation will be 
 required in order to SSH into the instance. 
+
+For documentation in how to generate a SSH key, please visit http://docs.ovh.ca/en/guides-ssh-publiccloud.html[here]. 
