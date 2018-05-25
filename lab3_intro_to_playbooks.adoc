@@ -211,7 +211,8 @@ Everything together should look like the following (_prepare-for-lab.yml_):
          - libselinux-python
         
      - name: Installing Shade from Pypi
-       shell: pip install shade --upgrade
+       pip: 
+         name: shade
        
      - name: Install python-openstackclient
        shell: pip install python-openstackclient --upgrade
