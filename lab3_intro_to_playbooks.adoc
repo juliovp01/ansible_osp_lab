@@ -170,7 +170,8 @@ Next, install the required packages such as gcc, python-devel, libselinux-python
         - libselinux-python
         
     - name: Installing Shade from Pypi
-      shell: pip install shade --upgrade
+      pip: 
+        name: shade
 ----
 Lastly, install the python-openstackclient
 
