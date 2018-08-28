@@ -102,7 +102,7 @@ There is another type of variable in Ansible that is applied at the inventory le
 [source,]
 ----
 [servers]
-ansible1.magicasaservice.com ansible_user=ansible_i2
+ansible1.magicasaservice.com ansible_user=ansible_i23
 ----
 
 * Here is an example for a group variable:
@@ -114,7 +114,7 @@ ansible1.magicasaservice.com
 ansible2.magicasaservice.com
 
 [servers:vars]
-ansible_user=ansible_i2
+ansible_user=ansible_i23
 ----
 
 For more detail on host and group variables, please visit: http://docs.ansible.com/ansible/latest/user_guide/intro_inventory.html#host-variables[here] . 
@@ -173,15 +173,3 @@ also, you could use the _include_vars_ as previously show to include variables f
 ----
 
 Using multiple, external files for tasks and variables is a convenient way to build the main playbook in a modular way. You could use the *include* directive to have a task file inserted at a particular point in a playbook.
-
-
-
-
-
-
-
-
-
-
-
-
