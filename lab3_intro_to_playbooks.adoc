@@ -201,6 +201,21 @@ Everything together should look like the following (_prepare-for-lab.yml_):
          - python-devel
          - libselinux-python
          - python-virtualenv
+         - ansible-openstack-modules
+         - openssl-devel
+         - libffi-devel
+         - 
+
+     - name: make sure setuptools is latest
+       pip:
+         name: setuptools
+         state: latest
+
+     - name: install shade
+       pip:
+         name: shade
+         version: 1.27.1
+         extra_args: "-Iv"
 ...
 ----
 
@@ -216,18 +231,7 @@ Execute the playbook via the following command:
 $ ansible-playbook prepare-for-lab.yml 
 ----
 
-Because we are using RHEL 7.5 in our lab and there is a dependency issue on `pip`, we are going to manually create a virtual environment and install `shade`, `setuptools`, and `python-openstackclient`. 
-
-----
-$ virtualenv --system-site-packages shade
-$ source shade/bin/activate
-$ (shade) pip install setuptools --upgrade
-$ (shade) pip install shade
-$ (shade) pip install python-openstackclient
-----
-
-
-Verification that `shade` and `python-openstackclient` and was installed can be done via an ad-hoc command as
+Verification that `shade` was installed can be done via an ad-hoc command as
 follows:
 
 ----
