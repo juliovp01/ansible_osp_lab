@@ -382,6 +382,3 @@ Answer to exercise:
       loop: "{{ ports }}"
       when: ports is defined
 ---- 
-
-
-
