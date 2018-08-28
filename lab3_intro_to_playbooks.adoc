@@ -80,7 +80,7 @@ ____
 == Running playbooks
 
 
-Now that we know the structure of a playbook and how easy could be to write one, let's discuss the ansible-playbook command. The ansible-playbook command is used to run playbooks and is executed in the control node. Using this command could be as simple as the following example: 
+Now that we know the structure of a playbook and how easy could be to write one, let's discuss the ansible-playbook command. The ansible-playbook command is used to run playbooks and is executed in the control (in this case your `workstation` ) node. Using this command could be as simple as the following example: 
 
 [source,]
 ----
@@ -192,8 +192,7 @@ Everything together should look like the following (_prepare-for-lab.yml_):
        package:
          name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
          state: present
-       when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
-    
+    pip 
      - name: Install pip
        package:
          name: python2-pip
@@ -210,13 +209,7 @@ Everything together should look like the following (_prepare-for-lab.yml_):
          - gcc
          - python-devel
          - libselinux-python
-        
-     - name: Installing Shade from Pypi
-       pip: 
-         name: shade
-       
-     - name: Install python-openstackclient
-       shell: pip install python-openstackclient --upgrade
+         - python-virtualenv
 ...
 ----
 
@@ -232,17 +225,22 @@ Execute the playbook via the following command:
 $ ansible-playbook prepare-for-lab.yml 
 ----
 
-Verification that `shade` was installed can be done via an ad-hoc command as
+Because we are using RHEL 7.5 in our lab and there is a dependency issue on `pip`, we are going to manually create a virtual environment and install `shade`, `setuptools`, and `python-openstackclient`. 
+
+----
+$ virtualenv --system-site-packages shade
+$ source shade/bin/activate
+$ (shade) pip install setuptools --upgrade
+$ (shade) pip install shade
+$ (shade) pip install python-openstackclient
+----
+
+
+Verification that `shade` and `python-openstackclient` and was installed can be done via an ad-hoc command as
 follows:
 
 ----
 $ ansible localhost -m command -a "pip list"
-----
-
-Verification that `python-openstackclient` was installed can be done via an ad-hoc command as follows:
-
-----
-$ ansible localhost -m command -a "rpm -q python-openstackclient"
 ----
 
 The above command will show if the package is currently installed. 
