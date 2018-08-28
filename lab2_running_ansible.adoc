@@ -184,6 +184,8 @@ After this, you will have two files:
 * `keystonerc_admin` : Keystone RC file for the admin user
 * `keystonerc_demo` : Keystone RC file for the demo user
 
+Go ahead and create the _/etc/openstack/clouds.yml_ file with the abpve format and the data required from the keystonerc files.
+
 == Ansible Configuration File
 
 The Ansible configuration file consists of multiple sections that are defined
