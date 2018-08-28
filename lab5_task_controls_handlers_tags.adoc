@@ -34,6 +34,8 @@ could create one Ansible task that installs those packages using the `yum`
 module by iterating over a list of packages to ensure they are installed. 
 An example is shown below.
 
+NOTE: We used loops before in the _prepare-for-lab.yml playbook.
+
 Without loops, say we wanted to install `httpd`, `vim`, `chrony`. The playbook
 would include the following tasks:
 
