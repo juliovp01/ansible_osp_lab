@@ -169,17 +169,8 @@ Next, install the required packages such as gcc, python-devel, libselinux-python
         - python-devel
         - libselinux-python
         
-    - name: Installing Shade from Pypi
-      pip: 
-        name: shade
 ----
-Lastly, install the python-openstackclient
 
-[source,]
-----
-    - name: Install python-openstackclient
-      shell: pip install python-openstackclient --upgrade
-----
 Everything together should look like the following (_prepare-for-lab.yml_):
 
 [source,]
