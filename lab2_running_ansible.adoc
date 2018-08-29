@@ -162,7 +162,7 @@ clouds:
      project_name: 'demo'
      project_domain_name: 'Default'
      user_domain_name: 'Default'
-   region_name: regionOne
+   #region_name: regionOne
    identity_api_version: 3
  admin:
    auth:
@@ -172,7 +172,7 @@ clouds:
      project_name: admin
      project_domain_name: Default
      user_domain_name: Default
-   region_name: regionOne
+   #region_name: regionOne
    identity_api_version: 3
 ansible:
   use_hostnames: True
