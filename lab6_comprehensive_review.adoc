@@ -50,8 +50,8 @@ Answer to the following exercise:
   vars: 
     flavor: m1.small
     key_name: demokp
-    server_name: studentX
-    image: cirros
+    server_name: student01
+    image: cirros01
     
   tasks:
 
@@ -60,18 +60,32 @@ Answer to the following exercise:
         url: http://download.cirros-cloud.net/0.4.0/cirros-0.4.0-x86_64-disk.img
         dest: /root/openstack-ansible/cirros
     
-    - name: Create a private network named studentX_private_network using os_network
+    - name: Upload Image.
+      os_image:
+        cloud: mycloud
+        name: "{{ image }}"
+        container_format: bare
+        disk_format: qcow2
+        state: present
+        filename: cirros
+        kernel: cirros-vmlinuz
+        ramdisk: cirros-initrd
+        properties:
+          cpu_arch: x86_64
+          distro: ubuntu
+    
+    - name: Create a private network named student01_private_network using os_network
       os_network:
         cloud: mycloud
         state: present
-        name: studentX_private_network
+        name: student01_private_network
 
-    - name: Create a private subnet named studentX_private_subnet using os_subnet with CIDR 192.168.0.0/24
+    - name: Create a private subnet named student01_private_subnet using os_subnet with CIDR 192.168.0.0/24
       os_subnet:
         cloud: mycloud
         state: present
-        network_name: studentX_private_network
-        name: studentX_private_subnet
+        network_name: student01_private_network
+        name: student01_private_subnet
         cidr: 192.168.0.1/24
       register: subnet
 
@@ -79,7 +93,7 @@ Answer to the following exercise:
       os_router:
         cloud: mycloud
         state: present
-        name: studentX_router1
+        name: student01_router1
         
     - name: Update default security group to allow ICMP traffic
       os_security_group_rule:
@@ -127,5 +141,43 @@ Answer to the following exercise:
 ...
 ----
 
-Now, let's verify that what we did is indeed working. 
+Now, let's verify that what we did is indeed working. In order to do this, we are going to use shade in a playbook. You could also login to cloud.example.com and use openstack commands to verify that everything is working. Here is an example for the image, network and subnet facts. 
+
+----
+---
+- name: Lab 6 OpenStack Comprehensive Review - Check
+  hosts: localhost
+  vars: 
+    flavor: m1.small
+    key_name: demokp
+    server_name: studentX
+    image: cirros
+
+  tasks:
+
+    - name: Get image facts
+      os_image_facts:
+        cloud: mycloud
+        image: "{{ image }}"
+
+    - name: Show  image facts
+      debug:
+        var: openstack_image
+
+    - name: Get network facts
+      os_networks_facts:
+        cloud: mycloud
+        name: student01_private_network
+
+    - name: Show network facts
+      debug:
+        var: openstack_networks
+
+    - name: Get subnet facts
+      os_subnets_facts:
+        cloud: mycloud
+        name: student01_private_subnet
+----
+
+For more information on the Ansible OpenStack module, you could visit: https://docs.ansible.com/ansible/2.5/modules/list_of_cloud_modules.html#openstack
 
