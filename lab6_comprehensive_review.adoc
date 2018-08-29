@@ -150,8 +150,8 @@ Now, let's verify that what we did is indeed working. In order to do this, we ar
   vars: 
     flavor: m1.small
     key_name: demokp
-    server_name: studentX
-    image: cirros
+    server_name: student01
+    image: cirros01
 
   tasks:
 
