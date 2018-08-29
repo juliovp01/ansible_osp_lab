@@ -55,6 +55,11 @@ Answer to the following exercise:
     
   tasks:
 
+    - name: Get Cirros File
+      get_url:
+        url: http://download.cirros-cloud.net/0.4.0/cirros-0.4.0-x86_64-disk.img
+        dest: /root/openstack-ansible/cirros
+    
     - name: Create a private network named studentX_private_network using os_network
       os_network:
         cloud: mycloud
@@ -117,19 +122,10 @@ Answer to the following exercise:
         image: "{{ image }}"
         key_name: "{{ key_name }}"
         security_groups: default
-        network: private_network
+        network: private
 
 ...
 ----
 
-////
-Keeping this code here, but we removed updating the os_router because we didn't want it to conflict with packstack install
+Now, let's verify that what we did is indeed working. 
 
-    - name: Update the OpenStack router to associate the interfaces of router1 with the public network.
-      os_router:
-        cloud: mycloud
-        state: present
-        name: router1
-        interfaces: "{{ subnet.id }}"
-        network: public
-////
