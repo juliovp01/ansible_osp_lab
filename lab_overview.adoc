@@ -26,18 +26,11 @@ ways to automate their day-to-day OpenStack administrative tasks._
 
 This lab will provide a step-by-step on using several http://docs.ansible.com/ansible/latest/modules/list_of_cloud_modules.html#openstack[Ansible OpenStack modules] 
 to manage everyday tasks. 
-The lab environment consists of a virtual machine running on 
-https://www.ovh.com/world/public-cloud/instances/[OVH public cloud
-instances] and the use of either the student's laptop as a workstation with
-https://ansible.com[Ansible] installed or running a Fedora https://www.virtualbox.org/[VirtualBox] 
-image provided by the instructors. 
+The lab environment consists of a two virtual machines running on 
+Ravello. One acting as the workstation and ansible controllers and the other as a OpenStack All-in-one cloud. 
 
-Each student's OVH public cloud instance consists of an 
-https://www.rdoproject.org/[RDO Project] OpenStack `packstack` installation 
-using https://www.centos.org/[CentOS] as the Linux distribution. Each instance
- will contain a file labeled  `keystonerc_demo` with all the credential 
-information to use an Openstack user labeled `demo` within the project 
-labeled `demo`. 
+Each student's cloud instance consists of Red Hat OpenStack Platform `packstack` installation 
+on Red Hat Enterprise Linux. 
 
 == Lab Scope
 
@@ -52,40 +45,4 @@ instances and their resources.
 
 == Connectivity Details
 
-The labs require students to be able to access the OVH instance via an `ssh` 
-session, via their workstation or a VirtualBox VM running Fedora. Each student
-will have a specific `student_id` that is assigned by the instructor. This 
-`student_id` is important as it is the name of your instance. 
-
-*IMPORTANT: If you have not been assigned a `student_id` and
-associated IP address of the instance, please get a hold
-of an instructor.*
-
-The folowing tables provide specific details about the environment that is to
-be used.
-
-|====
-| *OpenStack Dashboard | *OpenStack RC File Location* | *OpenStack User* | *Openstack Project* 
-| https://<ip_of_instance>/dashboard | /root/keystonerc_demo | demo | demo
-|====
-
-The details of the instance including the name and IP address will be 
-provided by the instructor during the lab.
-
-|====
-| *Name of Instance* | *IP Address* | *username* 
-| <student_id> | <instructor_provided> | centos
-|====
-
-The student's public SSH key i.e. `id_rsa.pub` on their workstation will be 
-required in order to SSH into the instance. 
-
-For documentation in how to generate a SSH key, please visit http://docs.ovh.ca/en/guides-ssh-publiccloud.html[here]. 
-
-To copy your SSH key into the instance you could use the *ssh-copy-id* command in Linux/MacOS or manually into the appropiate directory structure. The root credentials for the instance are: 
-
-|====
-| *Username* | *Password* 
-| root | OpenStack+Vancouver
-|====
-
+The labs require students to be able to deploy the environment from OpenTLC and access the workstation instance via an `ssh` session. 
