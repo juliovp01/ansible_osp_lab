@@ -177,7 +177,13 @@ Now, let's verify that what we did is indeed working. In order to do this, we ar
       os_subnets_facts:
         cloud: mycloud
         name: student01_private_subnet
+
+    - name: Show network facts
+      debug:
+        var: openstack_subnets
 ----
+
+Now, add the needed tasks to show the instance created facts. 
 
 For more information on the Ansible OpenStack module, you could visit: https://docs.ansible.com/ansible/2.5/modules/list_of_cloud_modules.html#openstack
 
