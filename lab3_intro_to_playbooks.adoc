@@ -145,7 +145,6 @@ First, create the initial portion of our playbook that defines the name, target,
       package:
         name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
         state: present
-      when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
     
     - name: Install pip
       package:
@@ -204,7 +203,6 @@ Everything together should look like the following (_prepare-for-lab.yml_):
          - ansible-openstack-modules
          - openssl-devel
          - libffi-devel
-         - 
 
      - name: make sure setuptools is latest
        pip:
