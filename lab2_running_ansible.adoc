@@ -1,6 +1,6 @@
 = Lab 2: Configuring and Running Ansible
 
-In lab two, we focus on creating static inventory files, configuring the 
+In lab two, we focus on creating static inventory files, configuring the
 `ansible.cfg` file, and running Ansible ad-hoc commands against our OpenStack
 instance.
 
@@ -8,11 +8,11 @@ instance.
 
 While Ansible supports both static and dynamic inventory files, this lab will
 only discuss static inventory files. Throughout this lab series this will be
-the only type of inventory that is used. 
+the only type of inventory that is used.
 
 An inventory file is a text file that specifices the nodes that will be managed
 by the control machine. The nodes to be managed may include a list of hostnames
-or IP addresses of those nodes. The inventory file allows for nodes to be 
+or IP addresses of those nodes. The inventory file allows for nodes to be
 organized into groups by declaring a host group name within square brackets ([]).
 
 Below is an example of an inventory file that creates two host groups:
@@ -36,7 +36,7 @@ dev3.example.com
 It is considered best practices to group managed nodes in host groups for better
 organization. If there is a long list of nodes to be managed that have a
 predictable name such as _prodX.example.com` where X is the node number. Ansible
-inventory files provide the ability of specifying ranges in hostnames or IP 
+inventory files provide the ability of specifying ranges in hostnames or IP
 addresses. For example, the above inventory file can be simplified as follows:
 
 ----
@@ -54,7 +54,7 @@ with 1 and ending with 3.
 
 
 Aside from being able to create host groups that contain nodes, and specifying
-ranges, a host group can also be a collection of other host groups using the 
+ranges, a host group can also be a collection of other host groups using the
 :children suffix. For example, review the following inventory file:
 
 ----
@@ -72,7 +72,7 @@ florida
 ----
 
 In the example above, the host group _usa_ inherits the managed nodes within
-the _texas_ host group and the _florida_ host group. 
+the _texas_ host group and the _florida_ host group.
 
 === Guided Exercise: Lab Inventory File
 
@@ -81,60 +81,31 @@ purposes of this exercise, we will create a very simplistic inventory file that 
 contains the IP address of our OVH public cloud instance that was provided
 by your instructor.
 
-. On your workstation we are going to create a directory labeled `openstack-ansible` inside the `root` user home directory. 
-
-.Switch to root 
-----
-$ sudo su - 
-----
-
-.Create the working directory
+. On your laptop/workstation, create a directory labeled `openstack-ansible`
++
 ----
 $ mkdir ~/openstack-ansible
 ----
-
-.Change into the `openstack-ansible` directory and create a file labeled `inventory`
-
++
+. Change into the `openstack-ansible` directory and create a file labeled `inventory`
++
 ----
 $ cd ~/openstack-ansible
 $ vi inventory
 ----
-
-.Create the Inventory file
++
+.Example Inventory File
 ----
-[workstation_local]
-workstation.example.com ansible_connection=local
-
-[openstack]
-cloud.example.com
-
-[lab:children]
-workstation_local
-openstack
+<ip-provided-by-instructor>
 ----
- 
+
 In order to verify access to your host, test the above inventory with the
-following Ansible command on your workstation:
+following Ansible command on your laptop/workstation:
 
 ----
 $ ansible all -i ~/openstack-ansible/inventory --list-hosts
-  hosts (2):
-    cloud.example.com
-    localhost
-----
-
-And then execute the ansible command with the ping module: 
-
-----
-$ ansible all -i inventory -m ping
-workstation.example.com | SUCCESS => {
-    "changed": false,
-    "ping": "pong"
-}
-cloud.example.com | SUCCESS => {
-    "changed": false,
-    "ping": "pong"
-}
+  hosts (1):
+    <ip-provided-by-instructor>
 ----
 
 NOTE: The _all_ part of the command is a special Ansible group that queries
@@ -144,66 +115,61 @@ example above.
 
 == YAML Configuration File
 
+. On your laptop/workstation, create a directory labeled `openstack`
++
+----
+$ mkdir /etc/openstack
+----
++
 In order to use the OpenStack cloud modules from Ansible, a special YAML file
 is required within the _/etc/openstack/clouds.yml_. This file includes all the
-information provided within your _keystonerc_demo_ and _keystonerc_admin_ files that 
-were created once the packstack installation completed. An example of the file 
+information provided within your _keystonerc_demo_ and _keystonerc_admin_ files that
+were created once the packstack installation completed. An example of the file
 is shown below. Notice how there are two clouds which represent two different
 types of access. _mycloud_ represents our demo environment and _admin_ represents our
-administrative cloud access. 
-
+administrative cloud access.
++
+. Change into the `openstack` directory and create a file labeled `clouds.yml`
++
+----
+$ cd /etc/openstack
+$ vi clouds.yml
+----
++
+.clouds.yml
 ----
 clouds:
- mycloud:
-   auth:
-     auth_url: 'http://192.0.2.1:5000'
-     username: 'demo'
-     password: eaadb7a2cd2a4468
-     project_name: 'demo'
-     project_domain_name: 'Default'
-     user_domain_name: 'Default'
-   #region_name: regionOne
-   identity_api_version: 3
- admin:
-   auth:
-     auth_url: http://192.0.2.1:5000
-     username: admin
-     password: '5c9b21133a7b477c'
-     project_name: admin
-     project_domain_name: Default
-     user_domain_name: Default
-   #region_name: regionOne
-   identity_api_version: 3
+  mycloud:
+    auth:
+      auth_url: http://10.19.114.177:5000
+      username: demo
+      password: demo
+      project_name: demo-tenant
+    region_name: regionOne
+  admin:
+    auth:
+      auth_url: http://10.19.114.177:5000
+      username: admin
+      password: YZagwYUFPMpm9pxWe9sWYvNJn
+      project_name: admin
+    region_name: regionOne
 ansible:
   use_hostnames: True
   expand_hostvars: False
 ----
-
-In order to gather the data required to create this file later in the lab, we need to copy the `keystonrc` files from cloud.example.com. In order to do that, let's execute the following command: 
-
-----
-$ scp cloud.example.com:/root/keystonerc* .
-----
-
-After this, you will have two files: 
-
-* `keystonerc_admin` : Keystone RC file for the admin user
-* `keystonerc_demo` : Keystone RC file for the demo user
-
-Go ahead and create the _/etc/openstack/clouds.yml_ file with the above format and the data required from the keystonerc files.
 
 == Ansible Configuration File
 
 The Ansible configuration file consists of multiple sections that are defined
 as key-value pairs. When Ansible is installed, it contains the default
 `ansible.cfg` file in the location `/etc/ansible/ansible.cfg`. It is recommended
-to open the `/etc/ansible/ansible.cfg` to view all the different options and 
+to open the `/etc/ansible/ansible.cfg` to view all the different options and
 settings that be can modified. For the purposes of this lab, our focus will be
 on two sections: _[defaults]_ and _[privilege_escalation]_.
 
-Most of the changes of an `ansible.cfg` file are done within the [defaults] 
+Most of the changes of an `ansible.cfg` file are done within the [defaults]
 section, while the [privilege_escalation] section provides how operations should
-run when requiring escalated privileges. 
+run when requiring escalated privileges.
 
 When dealing with the `ansible.cfg` file, it can be stored in multiple locations.
 The locations include:
@@ -213,15 +179,15 @@ The locations include:
 * local directory from where you run Ansible commands.
 
 The location of the configuration file is important as it will dictate which
-`ansible.cfg` is used. 
+`ansible.cfg` is used.
 
-It is best practice to store your `ansible.cfg` file in the same location as 
-where the playbooks for this lab will be created. 
+It is best practice to store your `ansible.cfg` file in the same location as
+where the playbooks for this lab will be created.
 
 === Guided Exercise: Create Ansible.cfg
 
 In this exercise, create a local `ansible.cfg` file within the _openstack-ansible_
-directory. 
+directory.
 
 . Change into the _openstack-ansible_ directory.
 +
@@ -238,15 +204,18 @@ $ vi ~/openstack-ansible/ansible.cfg
 .Contents of ansible.cfg
 ----
 [defaults]
-remote_user = root
+remote_user = centos
 inventory = ./inventory
 
 [privilege_escalation]
 become = true
 ----
 
-The OpenStack instance that has been created for you uses the `root` user to execute actions. This is not a common/best practice, usually a second user is create it with `sudo` privileges. The file above tells Ansible to use the user `root` when attempting `ssh` connectivity, use the file inventory for our managed node, and when required, to use `sudo` if
-privilege escalation is required. 
+The OpenStack instance that has been created for you uses a user labeled
+`centos` that contains `sudo` privileges. The file above tells Ansible to use
+the user `centos` when attempting `ssh` connectivity, use the file inventory
+for the IP address of our managed node, and when required, to use `sudo` if
+privilege escalation is required.
 
 === Guided Exercise: Verify Connectivity to our OpenStack Instance
 
@@ -261,16 +230,16 @@ file using the following command:
 ----
 $ ansible --version
 
-ansible 2.5.5
-  config file = /home/root/openstack-ansible/ansible.cfg
-  configured module search path = [u'/root/.ansible/plugins/modules', u'/usr/share/ansible/plugins/modules']
+$ ansible 2.5.0
+  config file = */path/to/openstack-ansible/ansible.cfg*
+  configured module search path = [u'/home/rlopez/.ansible/plugins/modules', u'/usr/share/ansible/plugins/modules']
   ansible python module location = /usr/lib/python2.7/site-packages/ansible
-  executable location = /bin/ansible
-  python version = 2.7.5 (default, Feb 20 2018, 09:19:12) [GCC 4.8.5 20150623 (Red Hat 4.8.5-28)]
+  executable location = /usr/bin/ansible
+  python version = 2.7.14 (default, Feb 27 2018, 20:43:24) [GCC 7.3.1 20180130 (Red Hat 7.3.1-2)]
 ----
 
 NOTE: Ensure that the _config file_ location points to the `ansible.cfg` located
-within our _openstack-ansible_ directory. 
+within our _openstack-ansible_ directory.
 
 Once the correct `ansible.cfg` being used as been identified, run the following
 Ansible ad hoc commands:
@@ -278,21 +247,14 @@ Ansible ad hoc commands:
 ----
 $ ansible all -m ping
 
-workstation.example.com | SUCCESS => {
-    "changed": false,
-    "ping": "pong"
-}
-cloud.example.com | SUCCESS => {
+<ip-provided-by-instructor> | SUCCESS => {
     "changed": false,
     "ping": "pong"
 }
 
 $ ansible all -m command -a "hostname"
-workstation.example.com | SUCCESS | rc=0 >>
-workstation-957a.rhpds.opentlc.com
-
-cloud.example.com | SUCCESS | rc=0 >>
-cloud.example.com
+<ip-provided-by-instructor> | SUCCESS | rc=0 >>
+<hostname>
 ----
 
 The `ansible all -m ping` attempts to `ping` the OpenStack instance and will send
@@ -300,4 +262,4 @@ output whether or not it was successful.
 
 The `ansible all -m command -a "hostname"` runs the `command` module (-m), with
 the argument (-a) `hostname` on the remote node. This should report the hostname
-provided by your instructor in the beginning of the lab. 
+provided by your instructor in the beginning of the lab.
