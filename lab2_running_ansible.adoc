@@ -139,20 +139,26 @@ $ vi clouds.yml
 .clouds.yml
 ----
 clouds:
-  mycloud:
-    auth:
-      auth_url: http://10.19.114.177:5000
-      username: demo
-      password: demo
-      project_name: demo-tenant
-    region_name: regionOne
-  admin:
-    auth:
-      auth_url: http://10.19.114.177:5000
-      username: admin
-      password: YZagwYUFPMpm9pxWe9sWYvNJn
-      project_name: admin
-    region_name: regionOne
+ mycloud:
+   auth:
+     auth_url: 'http://192.0.2.1:5000'
+     username: 'demo'
+     password: eaadb7a2cd2a4468
+     project_name: 'demo'
+     project_domain_name: 'Default'
+     user_domain_name: 'Default'
+   #region_name: regionOne
+   identity_api_version: 3
+ admin:
+   auth:
+     auth_url: http://192.0.2.1:5000
+     username: admin
+     password: '5c9b21133a7b477c'
+     project_name: admin
+     project_domain_name: Default
+     user_domain_name: Default
+   #region_name: regionOne
+   identity_api_version: 3
 ansible:
   use_hostnames: True
   expand_hostvars: False
