@@ -118,7 +118,7 @@ example above.
 . On your laptop/workstation, create a directory labeled `openstack`
 +
 ----
-$ mkdir /etc/openstack
+$ sudo mkdir /etc/openstack
 ----
 +
 In order to use the OpenStack cloud modules from Ansible, a special YAML file
@@ -133,7 +133,7 @@ administrative cloud access.
 +
 ----
 $ cd /etc/openstack
-$ vi clouds.yml
+$ sudo vi clouds.yml
 ----
 +
 .clouds.yml
