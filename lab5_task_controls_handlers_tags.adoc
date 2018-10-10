@@ -223,8 +223,7 @@ the beginning of this course.
 == Handlers
 
 Handlers are a special task that are inactive unless triggered by calling
-the `notify` statement. When the `notify` statement is called, all the tasks
-within a playbook are run and then they are followed by the handler tasks. 
+the `notify` statement. When the `notify` statement is used in a task, the handler called by it will run after all the tasks.
 The handler tasks are all written under a special section labeled _handlers_.
 
 Why are handlers important?
