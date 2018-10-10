@@ -144,6 +144,12 @@ example above.
 
 == YAML Configuration File
 
+On your laptop/workstation, create a directory labeled `openstack`
+
+----
+$ mkdir /etc/openstack
+----
+
 In order to use the OpenStack cloud modules from Ansible, a special YAML file
 is required within the _/etc/openstack/clouds.yml_. This file includes all the
 information provided within your _keystonerc_demo_ and _keystonerc_admin_ files that 
