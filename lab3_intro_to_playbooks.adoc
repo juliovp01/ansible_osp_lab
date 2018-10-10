@@ -124,6 +124,35 @@ $ ansible-playbook -C openstack-operator.yml
 
 At this point, we know how to write and execute basic playbooks. In this section, we will put everything together by using writing a playbook that will perform some basic tasks related to OpenStack. 
 
+To make the writing of Ansible Playbooks easier, you can install the `vim` package with a customized `.vimrc`.
+By using the Vim text editor, you can apply some settings which might make it easier to edit your playbooks.
+For example, by adding the following line to your `$HOME/.vimrc` file, when vim detects that you're editing a YAML file, it performs a two space indentation when the `Tab` key is pressed, autoindents subsequent lines, and expands tabs into spaces.
+
+As the root user, install the `vim` package:
+[source,]
+----
+# yum install vim
+----
+
+As the `lab-user`, create the `.vimrc` file in the user's home directory with the following content:
+[source,]
+----
+autocmd FileType yml setlocal ai ts=2 sw=2 et
+----
+
+Edit the user's `.bashrc` file by appending the following alias:
+[source,]
+----
+alias vi='vim'
+----
+
+Finally, source the `.bashrc` file:
+[source,]
+----
+$ source ~/.bashrc
+----
+
+You are now ready to create your first playbook.
 To do that, let's create a file in your editor of choice, this file will be named: **prepare-for-lab.yml** that will be performing a couple of tasks: 
 
 * Register EPEL in order to install python2-pip (if using RHEL/CentOS)
@@ -237,3 +266,4 @@ $ ansible localhost -m command -a "pip list"
 ----
 
 The above command will show if the package is currently installed. 
+
