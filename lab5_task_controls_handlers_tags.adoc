@@ -129,8 +129,8 @@ using the undercloud server.
 We will be using the Ansible modules `os_security_group` and 
 `os_security_group_rule` to set our OpenStack security groups. Open up the 
 following TCP ports on the `master-sg` group: 22, 80, and 443. Within the `app-sg`,
-only open the TCP ports 80 and 443. The goal of this exercise is to use loops were
-appopriate.
+only open the TCP ports 80 and 443. The goal of this exercise is to use loops when
+appropriate.
 
 Using the localhost host, setup the first lines of the playbook.
 
