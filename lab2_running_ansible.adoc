@@ -81,60 +81,31 @@ purposes of this exercise, we will create a very simplistic inventory file that 
 contains the IP address of our OVH public cloud instance that was provided
 by your instructor.
 
-. On your workstation we are going to create a directory labeled `openstack-ansible` inside the `root` user home directory.
-
-.Switch to root
-----
-$ sudo su -
-----
-
-.Create the working directory
+. On your laptop/workstation, create a directory labeled `openstack-ansible`
++
 ----
 $ mkdir ~/openstack-ansible
 ----
-
-.Change into the `openstack-ansible` directory and create a file labeled `inventory`
-
++
+. Change into the `openstack-ansible` directory and create a file labeled `inventory`
++
 ----
 $ cd ~/openstack-ansible
 $ vi inventory
 ----
-
-.Create the Inventory file
++
+.Example Inventory File
 ----
-[workstation_local]
-workstation.example.com ansible_connection=local
-
-[openstack]
-cloud.example.com
-
-[lab:children]
-workstation_local
-openstack
+<ip-provided-by-instructor>
 ----
 
 In order to verify access to your host, test the above inventory with the
-following Ansible command on your workstation:
+following Ansible command on your laptop/workstation:
 
 ----
 $ ansible all -i ~/openstack-ansible/inventory --list-hosts
-  hosts (2):
-    cloud.example.com
-    localhost
-----
-
-And then execute the ansible command with the ping module:
-
-----
-$ ansible all -i inventory -m ping
-workstation.example.com | SUCCESS => {
-    "changed": false,
-    "ping": "pong"
-}
-cloud.example.com | SUCCESS => {
-    "changed": false,
-    "ping": "pong"
-}
+  hosts (1):
+    <ip-provided-by-instructor>
 ----
 
 NOTE: The _all_ part of the command is a special Ansible group that queries
@@ -144,6 +115,12 @@ example above.
 
 == YAML Configuration File
 
+. On your laptop/workstation, create a directory labeled `openstack`
++
+----
+$ mkdir /etc/openstack
+----
++
 In order to use the OpenStack cloud modules from Ansible, a special YAML file
 is required within the _/etc/openstack/clouds.yml_. This file includes all the
 information provided within your _keystonerc_demo_ and _keystonerc_admin_ files that
@@ -151,7 +128,15 @@ were created once the packstack installation completed. An example of the file
 is shown below. Notice how there are two clouds which represent two different
 types of access. _mycloud_ represents our demo environment and _admin_ represents our
 administrative cloud access.
-
++
+. Change into the `openstack` directory and create a file labeled `clouds.yml`
++
+----
+$ cd /etc/openstack
+$ vi clouds.yml
+----
++
+.clouds.yml
 ----
 clouds:
  mycloud:
@@ -178,19 +163,6 @@ ansible:
   use_hostnames: True
   expand_hostvars: False
 ----
-
-In order to gather the data required to create this file later in the lab, we need to copy the `keystonrc` files from cloud.example.com. In order to do that, let's execute the following command:
-
-----
-$ scp cloud.example.com:/root/keystonerc* .
-----
-
-After this, you will have two files:
-
-* `keystonerc_admin` : Keystone RC file for the admin user
-* `keystonerc_demo` : Keystone RC file for the demo user
-
-Go ahead and create the _/etc/openstack/clouds.yml_ file with the above format and the data required from the keystonerc files.
 
 == Ansible Configuration File
 
@@ -238,14 +210,17 @@ $ vi ~/openstack-ansible/ansible.cfg
 .Contents of ansible.cfg
 ----
 [defaults]
-remote_user = root
+remote_user = centos
 inventory = ./inventory
 
 [privilege_escalation]
 become = true
 ----
 
-The OpenStack instance that has been created for you uses the `root` user to execute actions. This is not a common/best practice, usually a second user is create it with `sudo` privileges. The file above tells Ansible to use the user `root` when attempting `ssh` connectivity, use the file inventory for our managed node, and when required, to use `sudo` if
+The OpenStack instance that has been created for you uses a user labeled
+`centos` that contains `sudo` privileges. The file above tells Ansible to use
+the user `centos` when attempting `ssh` connectivity, use the file inventory
+for the IP address of our managed node, and when required, to use `sudo` if
 privilege escalation is required.
 
 === Guided Exercise: Verify Connectivity to our OpenStack Instance
@@ -261,12 +236,12 @@ file using the following command:
 ----
 $ ansible --version
 
-ansible 2.5.5
-  config file = /home/root/openstack-ansible/ansible.cfg
-  configured module search path = [u'/root/.ansible/plugins/modules', u'/usr/share/ansible/plugins/modules']
+$ ansible 2.5.0
+  config file = */path/to/openstack-ansible/ansible.cfg*
+  configured module search path = [u'/home/rlopez/.ansible/plugins/modules', u'/usr/share/ansible/plugins/modules']
   ansible python module location = /usr/lib/python2.7/site-packages/ansible
-  executable location = /bin/ansible
-  python version = 2.7.5 (default, Feb 20 2018, 09:19:12) [GCC 4.8.5 20150623 (Red Hat 4.8.5-28)]
+  executable location = /usr/bin/ansible
+  python version = 2.7.14 (default, Feb 27 2018, 20:43:24) [GCC 7.3.1 20180130 (Red Hat 7.3.1-2)]
 ----
 
 NOTE: Ensure that the _config file_ location points to the `ansible.cfg` located
@@ -278,21 +253,14 @@ Ansible ad hoc commands:
 ----
 $ ansible all -m ping
 
-workstation.example.com | SUCCESS => {
-    "changed": false,
-    "ping": "pong"
-}
-cloud.example.com | SUCCESS => {
+<ip-provided-by-instructor> | SUCCESS => {
     "changed": false,
     "ping": "pong"
 }
 
 $ ansible all -m command -a "hostname"
-workstation.example.com | SUCCESS | rc=0 >>
-workstation-957a.rhpds.opentlc.com
-
-cloud.example.com | SUCCESS | rc=0 >>
-cloud.example.com
+<ip-provided-by-instructor> | SUCCESS | rc=0 >>
+<hostname>
 ----
 
 The `ansible all -m ping` attempts to `ping` the OpenStack instance and will send
