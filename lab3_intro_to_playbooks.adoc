@@ -182,7 +182,7 @@ Everything together should look like the following (_prepare-for-lab.yml_):
        package:
          name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
          state: present
-    pip 
+ 
      - name: Install pip
        package:
          name: python2-pip
