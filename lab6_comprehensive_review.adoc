@@ -181,6 +181,7 @@ Now, let's verify that what we did is indeed working. In order to do this, we ar
     - name: Show network facts
       debug:
         var: openstack_subnets
+...
 ----
 
 Now, add the needed tasks to show the instance created facts. 
