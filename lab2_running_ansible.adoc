@@ -85,7 +85,7 @@ by your instructor.
 
 .Switch to root 
 ----
-$ sudo su - 
+$ sudo -i
 ----
 
 .Create the working directory
