@@ -155,7 +155,7 @@ First, create the initial portion of our playbook that defines the name, target,
       shell: pip install --upgrade pip
 ----
 
-Next, install the required packages such as gcc, python-devel, libselinux-python, and shade. 
+Next, install the required packages such as gcc, python-devel, libselinux-python, and the OpenStack Ansible modules. 
 
 [source,]
 ----
@@ -167,7 +167,27 @@ Next, install the required packages such as gcc, python-devel, libselinux-python
         - gcc
         - python-devel
         - libselinux-python
+        - python-virtualenv
+        - ansible-openstack-modules
+        - openssl-devel
+        - libffi-devel
         
+----
+
+Finally, use pip to install setuptools and shade.
+
+[source,]
+----
+     - name: make sure setuptools is latest
+       pip:
+         name: setuptools
+         state: latest
+
+     - name: install shade
+       pip:
+         name: shade
+         version: 1.27.1
+         extra_args: "-Iv"
 ----
 
 Everything together should look like the following (_prepare-for-lab.yml_):

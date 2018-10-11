@@ -85,7 +85,7 @@ by your instructor.
 
 .Switch to root 
 ----
-$ sudo su - 
+$ sudo -i
 ----
 
 .Create the working directory
@@ -268,7 +268,7 @@ file using the following command:
 $ ansible --version
 
 ansible 2.5.5
-  config file = /home/root/openstack-ansible/ansible.cfg
+  config file = /root/openstack-ansible/ansible.cfg
   configured module search path = [u'/root/.ansible/plugins/modules', u'/usr/share/ansible/plugins/modules']
   ansible python module location = /usr/lib/python2.7/site-packages/ansible
   executable location = /bin/ansible

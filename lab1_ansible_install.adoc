@@ -102,5 +102,5 @@ sudo yum -y install ansible git
 .Let's verify that the packages are install by executing the following: 
 
 ----
-sudo rpm -qi ansible; sudo rpm -qi git
+sudo yum list installed ansible git
 ----
